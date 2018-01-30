@@ -55,7 +55,8 @@ Erik Riis, evr4
 	* handles keyboard input
 
 
-
+![Good flow](good_flow_prototype.gif "good flow")
+![Bad flow](bad_flow_prototype.gif "bad flow")
 
 ### User Interface
 
