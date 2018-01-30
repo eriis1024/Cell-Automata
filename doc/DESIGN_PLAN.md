@@ -68,7 +68,6 @@ The user interface will consist of six main elements:
 6. **Speed**: The user can input a positive integer value to determine how many frame updates they would like per second. This feature affects the refresh rate when the simulation is “Playing”. The default Speed is 1 frame per second.
 	
 ### Design Details
-This section describes each component introduced in the Overview in detail (as well as any other sub-components that may be needed but are not significant to include in a high-level description of the program). It should describe how each component handles specific features given in the assignment specification, what resources it might use, how it collaborates with other components, and how each could be extended to include additional requirements (from the assignment specification or discussed by your team). Include the steps needed to complete the Use Cases below to help make your descriptions more concrete. Finally, justify the decision to create each component with respect to the design's key goals, principles, and abstractions. This section should go into as much detail as necessary to cover all your team wants to say.
 
 * public class Runner extends Application{} - main class that manages userInterface, Rules, Simulation, and Viewer. Starts off by calling Rules to import information from the XML file, and that call puts the rest of the process (making a Simulation) into motion.
 * public class Rules{} - parses XML file (throwing exception if formatted improperly), and generates an ArrayList of Cells that represent the starting conditions of the Grid, which Rules also makes
@@ -78,14 +77,6 @@ This section describes each component introduced in the Overview in detail (as w
 * public Cell extends Shape{} - not abstract, will only have 1 type of cell that each kind of Simulation makes, to avoid parallel hierarchies. Not a very smart class, has variables and getter methods. Cells aren’t meant to be modified, just to hold information to animate.
 * public interface Neighborhood{} - subclasses based on how simulations define what a neighbor is and what cells factor into another cell changing/keeping state
 * public class userInterface{} - This class deals with the user interface components of the project from mouse/keyboard inputs. Anything the user interacts with directly is handled here.
-
-Use Cases
-The following scenarios are provided to help test the completeness and flexibility of your design. By writing the steps needed to complete each case below you will be able to see how effectively your design handles these scenarios and others will be able to better understand how deeply you have considered the basic issues.
-Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle (i.e., with all its neighbors)
-Apply the rules to an edge cell: set the next state of a cell to live by counting its number of neighbors using the Game of Life rules for a cell on the edge (i.e., with some of its neighbors missing)
-Move to the next generation: update all cells in a simulation from their current state to their next state and display the result graphically
-Set a simulation parameter: set the value of a parameter, probCatch, for a simulation, Fire, based on the value given in an XML fire
-Switch simulations: use the GUI to change the current simulation from Game of Life to Wator
 
 ### Use Cases
 * Middle cell: Our instance of Simulation has an update() method, which when called will get the neighbors of all cells in an instance of Grid, create a copy of the Grid, where every cell is updated, and replace the original Grid with the new Grid. We have a specific subclass of Neighborhood that is a constant in the given Simulation. The getNeighbors(Grid g, int x, int y) method from that class is called, with Grid and the x & y indices of the cell (retrievable with c.getX() & c.getY()) are passed through. getNeighbors() will return an ArrayList of Cells that neighbor the given cell. Our update() method will count the number of live cells (determined by iterating through the ArrayList returned by getNeighbors() and counting the number of live cells, interpreted with a c.getColor() call).
