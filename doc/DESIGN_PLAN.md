@@ -54,7 +54,7 @@ Erik Riis, evr4
 	* handles mouse input
 	* handles keyboard input
 
-
+![Flowchart](flowchart.png "Flowchart of Classes and interaction")
 ![Good flow](good_flow_prototype.gif "good flow")
 ![Bad flow](bad_flow_prototype.gif "bad flow")
 
