@@ -25,7 +25,7 @@
     * Andrew: I think that a good design is clear and able to be adapted easily. I think that our design is good is than it is modular so it should be very easy to add additional simulations after we have one work, which gives us flexibility.
 
 #Part 2
-*How is your area linked to/dependent on other areas of the project?
+* How is your area linked to/dependent on other areas of the project?
     * Katie: My area is dependent upon the cell and grid classes, as my configuration uses those constructors to make grids for each simulation. My part of the program also depends on the ruleset constructors, as I make rulesets using the XML input parameters as well. 
     * Erik: My area is linked to the Grid within the project as it needs to display the grid to the user, as well as update the grid with each step in the animation. It is also linked to the ParseXML class as the user will have to input the XML file corresponding to the desired simulation type.
     * Andrew: My area is dependent upon the GUI to provide the user input and on the XML parsing to read in the properties of the simulation itself. Additionally my parts are dependent upon the grid class to instantiate all of the cells and call the updates on them.
