@@ -27,7 +27,7 @@ Erik Riis, evr4
 	* public void update() // Creates copy of Grid, updates each cell according to neighbors & the specific simulation’s rules, and replaces current grid with copy when all Cell states have been updated
 * public class Grid{} - holds Cells
 	* private HashMap<String, Color> states;
-	* private Cell[][];
+	* private Cell;
 	* public Grid(int width, int height, ArrayList<Cell> cells, HashMap<String, Color> availableStates)
 * public int getWidth()
 	* public int getHeight()
