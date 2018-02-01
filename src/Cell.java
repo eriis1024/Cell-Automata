@@ -26,4 +26,8 @@ public class Cell {
 	public void setColor(Color c) {
 		myColor = c;
 	}
+	
+	public Cell copy() { //deep copy
+		return new Cell(myX, myY, myColor);
+	}
 }

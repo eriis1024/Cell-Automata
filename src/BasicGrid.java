@@ -8,13 +8,11 @@ public class BasicGrid implements Grid {
 	private int myWidth;
 	private int myHeight;
 	private Cell[][] cellArray;
-	private HashMap<String, Color> states;
 	
-	public BasicGrid(int width, int height, ArrayList<Cell> cells, HashMap<String, Color> availableStates) {
+	public BasicGrid(int width, int height, ArrayList<Cell> cells) {
 		myWidth = width;
 		myHeight = height;
 		cellArray = new Cell[height][width];
-		states = availableStates;
 		init(cells);
 	}
 	
@@ -30,17 +28,29 @@ public class BasicGrid implements Grid {
 		return cellArray[y][x];
 	}
 	
-	public void set(int x, int y, String state) {
-		get(x,y).setColor(states.get(state));
+	public void set(int x, int y, Color c) {
+		get(x,y).setColor(c);
 	}
 	
 	public void insert(Cell c) {
-		if(c.getY() >= myHeight || c.getX() >= myWidth || c.getX() < 0 || c.getY() < 0) System.out.println("should throw an error here");
-		cellArray[c.getY()][c.getX()] = c;
+		try {
+			cellArray[c.getY()][c.getX()] = c;
+		}catch(IndexOutOfBoundsException e) {
+			throw new IndexOutOfBoundsException("bad index for grid");
+		}
 	}
 	
 	private void init(ArrayList<Cell> cells) {
-		if(cells.size()>myWidth*myHeight) System.out.println("should throw an error here");
 		for (Cell c: cells) insert(c);
+	}
+	
+	public Grid copy() { //deep copy
+		ArrayList<Cell> clonedCells = new ArrayList<Cell>();
+		for(int i=0; i<getWidth();i++) {
+			for(int j = 0; j<getHeight();j++) {
+				clonedCells.add(get(i,j).copy());
+			}
+		}
+		return new BasicGrid(getWidth(), getHeight(), clonedCells);
 	}
 }
