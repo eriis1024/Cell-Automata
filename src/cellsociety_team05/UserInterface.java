@@ -7,7 +7,6 @@ package cellsociety_team05;
 //handles mouse input
 //handles keyboard input
 
-
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +15,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-//do not only handle with stacktrace?
 
 public class UserInterface {
 	protected StackPane root = new StackPane();
@@ -29,7 +27,6 @@ public class UserInterface {
 		Button stopButton = setButton(-180, 210, 100, 50, "Stop");
 		//stopButton.setStyle("-fx-background-color: #ff0000; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
 		root.getChildren().add(stopButton);
-
 
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

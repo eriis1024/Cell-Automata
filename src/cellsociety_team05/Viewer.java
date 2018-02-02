@@ -1,6 +1,5 @@
 package cellsociety_team05;
 
-
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -19,6 +18,7 @@ public class Viewer extends UserInterface {
 	
 	public void paintScene(Stage stage) {
 		setupScene();
+		
 		myScene = new Scene(root, SIZE, SIZE, BACKGROUND_COLOR);	
 		stage.setScene(myScene);
 		stage.show();
