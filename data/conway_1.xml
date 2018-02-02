@@ -1,0 +1,40 @@
+<?xml version="1.0">
+
+<simulation id="conway">
+    <head>
+        <author>John Conway</author>
+        <title>Conway's Game of Life</title>
+    </head>
+
+    <dim>
+        <width>50</width>
+        <height>50</height>
+    </dim>
+    
+    <cells>
+        <cell state="DEAD">
+            <x>0</x>
+            <y>0</y>
+        </cell>
+        <cell state="ALIVE">
+            <x>1</x>
+            <y>1</y>
+        </cell>
+        <cell state="DEAD">
+            <x>1</x>
+            <y>0</y>
+        </cell>
+        <cell state="ALIVE">
+            <x>3</x>
+            <y>1</y>
+        </cell>
+        <cell state="DEAD">
+            <x>6</x>
+            <y>0</y>
+        </cell>
+        <cell state="ALIVE">
+            <x>49</x>
+            <y>10</y>
+        </cell>
+    </cell>
+</simulation>

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.scene.paint.Color;
@@ -26,8 +27,10 @@ public abstract class Simulation {
 	}
 	
 	protected abstract String nextState(Grid g, Cell c, Neighborhood n);
-	
-	public abstract HashMap<String, Color> getStates();
+		
+	public HashMap<String, Color> getStates(){
+		return states;
+	}
 	
 	protected abstract void initStates();
 	

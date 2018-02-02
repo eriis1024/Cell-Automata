@@ -1,6 +1,6 @@
 import javafx.scene.paint.Color;
 
-public class Cell {
+public class Cell{
 	private Color myColor;
 	private int myX;
 	private int myY;
@@ -29,5 +29,10 @@ public class Cell {
 	
 	public Cell copy() { //deep copy
 		return new Cell(myX, myY, myColor);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return other instanceof Cell && myColor == ((Cell)other).getColor();
 	}
 }
