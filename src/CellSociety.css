@@ -1,9 +1,4 @@
 
-.root {
-	-fx-background-color: #000000;
-}
-
-
 .startButton {
     -fx-text-fill: #ffffff;
     -fx-font: 16 Arial;

@@ -1,3 +1,4 @@
+
 package cellsociety_team05;
 //This class deals with the user interface components of the project from mouse/keyboard inputs. 
 //Anything the user interacts with directly is handled here.
@@ -7,12 +8,17 @@ package cellsociety_team05;
 //handles mouse input
 //handles keyboard input
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,10 +29,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-//to do: create separate factory classes, write functions for buttons, finish layout, CSS file and final variables for button locations
 
 public class UserInterface extends Runner {
-	
+
 	public static final int BUTTON_SIZE_X = 80;
 	public static final int BUTTON_SIZE_Y = 70;
 	public static final int SIZE_X = 500;
@@ -40,7 +45,8 @@ public class UserInterface extends Runner {
 	protected static Group root = new Group(); //change from static by adding labels directly to dropdown menu
 	protected Timeline animation;
 	protected KeyFrame myFrame;
-	
+	private Desktop desktop = Desktop.getDesktop();
+
 	public void setupScene() {
 		myFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 				e -> step(SECOND_DELAY));
@@ -48,7 +54,7 @@ public class UserInterface extends Runner {
 		animation.getKeyFrames().clear();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(myFrame);
-		
+
 		//add grid to the scene, root.getChildren.add(grid);
 		Button startButton = Factory.setButton(165, 470, 135, 38, "START");
 		startButton.getStyleClass().add("startButton");
@@ -57,40 +63,44 @@ public class UserInterface extends Runner {
 		Button pauseButton = Factory.setButton(165, 512, 135, 38, "STOP");
 		pauseButton.getStyleClass().add("pauseButton");
 		root.getChildren().add(pauseButton);
-		
+
 		Button stepButton = Factory.setButton(305, 470, 170, 80, "STEP");
 		stepButton.getStyleClass().add("stepButton");
 		root.getChildren().add(stepButton);
-		
+
 		Button simButton = Factory.setButton(30, 470, 130, 80, "Choose Simulation");
 		simButton.getStyleClass().add("stepButton");
 		root.getChildren().add(simButton);
-		
+
 		FileChooser XMLchooser = new FileChooser();
 		XMLchooser.setTitle("Select Simulation");
-		
+
 		Label title = Factory.setLabel(20, 10, "CELL SOCIETY: Team 5");
 		title.getStyleClass().add("titleLabel");
 		root.getChildren().add(title);
 
 		TextField speedTextField = Factory.setTextField(350, 560, 125, 30);
 		root.getChildren().add(speedTextField);
-		
+
 		Label speedLabel = Factory.setLabel(302, 565, "Speed:");
 		root.getChildren().add(speedLabel);
-		
+
 		Label simLabel = Factory.setLabel(30, 565, "Current Simulation: ");
 		root.getChildren().add(simLabel);
-		
+
 		Label conwayLabel = Factory.setLabel(150, 565, "Conway");
 		conwayLabel.getStyleClass().add("simLabel");
-		
+
 		Label predpreyLabel = Factory.setLabel(150, 565, "Predator-Prey");
 		predpreyLabel.getStyleClass().add("simLabel");
-		
+
 		Label fireLabel = Factory.setLabel(150, 565, "Fire");
 		fireLabel.getStyleClass().add("simLabel");
 		
+		Alert speedAlert = Factory.setAlert("Wrong User Input", "Please enter an integer value");
+		 
+		Alert fileAlert = Factory.setAlert("Simulation File Chooser", "Incompatible file, please choose a simulation.xml file");
+
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -104,7 +114,7 @@ public class UserInterface extends Runner {
 				animation.stop();
 			}
 		});
-		
+
 		stepButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -113,32 +123,31 @@ public class UserInterface extends Runner {
 				animation.play();
 			}
 		});
-		
+
 		simButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				XMLchooser.showOpenDialog(myStage); //error
+				File file = XMLchooser.showOpenDialog(myStage); //error
 				//check if file is null or if the file chosen is of the wrong format
 				//if XML file = simulation, print simulation type
 				//root.getChildren().add(conwayLabel);
 				//root.getChildren().add(predpreyLabel);
 				//root.getChildren().add(fireLabel);
+				}
+		});
+
+		speedTextField.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.ENTER) {
+				//need alert if wrong type of input
+				try {
+				    int speed = Integer.parseInt(speedTextField.getText());
+				    SECOND_DELAY = speed;
+					System.out.println(speed);
+				} catch (NumberFormatException e) {
+				    System.out.println("Wrong number");
+				    speedAlert.show();
+				}
 			}
 		});
-		
-		 speedTextField.setOnKeyPressed(event -> {
-		      if (event.getCode() == KeyCode.ENTER) {
-		    	  	int speed = Integer.parseInt(speedTextField.getText());
-		        SECOND_DELAY = speed;
-		        System.out.println(speed);
-		      }
-		    });
-		
 	}
-	
-	//	protected void handleKeyInput (KeyCode code) { //handles keyboard/mouse input
-	//		if (code == KeyCode.RIGHT) {
-	//
-	//		}
-	//	}
 }

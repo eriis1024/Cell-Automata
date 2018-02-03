@@ -9,8 +9,6 @@ public class Runner extends Application{
 	public void start(Stage arg0) throws Exception {
 		// TODO Auto-generated method stub
 		
-		//runner updates the grid
-		
 		Viewer scene = new Viewer(); //calls viewer
 		scene.paintScene(arg0);
 	}
