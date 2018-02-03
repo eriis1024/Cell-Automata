@@ -1,14 +1,14 @@
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
-public class Cell {
-	private Color myColor;
+public class Cell extends Polygon{
 	private int myX;
 	private int myY;
 	
-	public Cell (int x, int y, Color c) {
+	public Cell (Color color, int x, int y) {
 		myX=x;
 		myY=y;
-		myColor = c;
+		colorCell(color);
 	}
 	
 	public int getX() {
@@ -20,14 +20,19 @@ public class Cell {
 	}
 	
 	public Color getColor() {
-		return myColor;
+		return (Color)getFill();
 	}
 	
-	public void setColor(Color c) {
-		myColor = c;
+	public void colorCell(Color c) {
+		setFill(c);
 	}
 	
 	public Cell copy() { //deep copy
-		return new Cell(myX, myY, myColor);
+		return new Cell((Color)getFill(), myX, myY);
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		return other instanceof Cell && getFill() == ((Cell)other).getFill();
 	}
 }

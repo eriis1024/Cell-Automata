@@ -13,10 +13,6 @@ public class ConwaySimulation extends Simulation{
 		initStates();
 	}
 	
-	public HashMap<String, Color> getStates(){
-		return states;
-	}
-	
 	protected void initStates() {
 		states.put(DEAD, Color.BLACK);
 		states.put(ALIVE, Color.WHITE);
