@@ -9,7 +9,9 @@ import javafx.scene.paint.Color;
 public class SimulationSegregation extends Simulation	{
 	public SimulationSegregation()	{
 		possStates = new HashMap<String, Color>()	{{
-			put();
+			put("empty", Color.WHITE);
+			put("x", Color.BLUE);
+			put("o", Color.RED);
 		}};
 	}
 }

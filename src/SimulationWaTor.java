@@ -9,7 +9,9 @@ import javafx.scene.paint.Color;
 public class SimulationWaTor extends Simulation	{
 	public SimulationWaTor()	{
 		possStates = new HashMap<String, Color>()	{{
-			put();
+			put("free", Color.BLUE);
+			put("prey", Color.YELLOW);
+			put("predator", Color.BLACK);
 		}};
 	}
 }

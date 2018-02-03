@@ -7,10 +7,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Cell extends Polygon	{
-	public Cell(Color color)	{
+	private String state;
+	private int xInd;
+	private int yInd;
+
+	public Cell(Color color, int x, int y)	{
+		colorCell(color);
+		xInd = x;
+		yInd = y;
 	}
 
-	public void makeCell(Color color)	{
+	public void colorCell(Color color)	{
 		this.setFill(color);
 	}
+
+	hungry
+	breeding time
 }

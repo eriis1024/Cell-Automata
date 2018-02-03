@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
 public class CellRectangle extends Cell	{
+	private double dimension = 50.0;
+
 	public CellRectangle(Color color)	{
 		super(color);
 		this.makeCell(color);
@@ -20,9 +22,9 @@ public class CellRectangle extends Cell	{
 		super.makeCell(color);
 		this.getPoints().addAll(new Double[]{
 			0.0, 0.0,
-			50.0, 0.0,
-			50.0, -50.0,
-			0.0, -50.0
+			dimension, 0.0,
+			dimension, 0 - dimension,
+			0.0, 0 - dimension
 		});
 	}
 }
