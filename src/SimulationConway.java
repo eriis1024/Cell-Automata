@@ -7,11 +7,15 @@ import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class SimulationConway extends Simulation	{
+	public static final Color DEFAULT_COLOR = Color.BLACK;
+
 	public SimulationConway()	{
+		super();
 		possStates = new HashMap<String, Color>()	{{
 			put("alive", Color.WHITE);
 			put("dead", Color.BLACK);
 		}};
+		neighborhood = new BasicNeighborhood();
 	}
 
 	/**
@@ -19,10 +23,10 @@ public class SimulationConway extends Simulation	{
 	 * This is where the conditions of simulation are held
 	 */
 	@Override
-	private String getNextState(Grid g, Cell c, Neighborhood n)	{
+	private String getNextState(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = getNeighborStates(g, c, n);
 
-		if (c.getFill() == possStates.get("alive"))	{
+		if (c.getColor() == possStates.get("alive"))	{
 			if (nStates.get("alive") < 2 || nStates.get("alive") > 3)	{
 				return "dead";
 			}
@@ -30,7 +34,7 @@ public class SimulationConway extends Simulation	{
 				return "alive";
 			}
 		}
-		else if (c.getFill() == possStates.get("dead"))	{
+		else if (c.getColor() == possStates.get("dead"))	{
 			if (nStates.get("alive") == 3)	{
 				return "alive";
 			}
@@ -41,16 +45,16 @@ public class SimulationConway extends Simulation	{
 	 * Returns number of cells in each state, in Cell c's neighborhood
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Neighborhood n)	{
+	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
 		int neighborsAlive = 0;
 		int neighborsDead = 0;
 
-		for (Cell neighbor:n)	{
-			if (neighbor.getFill() == possStates.get("alive"))	{
+		for (Cell neighbor:n.getNeighbors(grid, c))	{
+			if (neighbor.getColor() == possStates.get("alive"))	{
 				neighborsAlive++;
 			}
-			else if (neighbor.getFill() == passStates.get("dead"))	{
+			else if (neighbor.getColor() == possStates.get("dead"))	{
 				neighborsDead++;
 			}
 		}

@@ -10,14 +10,13 @@ import javafx.scene.paint.Color;
 public abstract class Simulation	{
 	protected HashMap<String, Color> possStates;
 	protected Grid grid;
-	protected Neighborhood neighbors;
+	protected Neighborhood neighborhood;
 
 	/**
 	 * @param Grid
 	 */
 	public Simulation(Grid g)	{
 		grid = g;
-		neighbors = new Neighborhood();
 	}
 
 	/**
@@ -26,9 +25,10 @@ public abstract class Simulation	{
 	public void update()	{
 		Grid updatedGrid = grid.copy();
 
-		for (int i = 0; i < grid.width; i++)	{
-			for (int j = 0; j < grid.height; j++; )	{
-				updatedGrid.setCell(i, j, ______________);
+		for (int i = 0; i < grid.getWidth(); i++)	{
+			for (int j = 0; j < grid.getHeight(); j++; )	{
+				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood.getNeighbors(grid, grid.get(i, j))));
+				updatedGrid.setCell(i, j, nextState);
 			}
 		}
 	}

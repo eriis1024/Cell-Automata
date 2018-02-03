@@ -7,12 +7,16 @@ import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public class SimulationFire extends Simulation	{
+	public static final Color DEFAULT_COLOR = Color.WHITE;
+
 	public SimulationFire()	{
+		super();
 		possStates = new HashMap<String, Color>()	{{
 			put("empty", Color.WHITE);
 			put("tree", Color.GREEN);
 			put("burning", Color.ORANGE);
 		}};
+		neighborhood = new NonDiagNeighborhood();
 	}
 
 	/**
@@ -24,7 +28,7 @@ public class SimulationFire extends Simulation	{
 		HashMap<String, Integer> nStates = getNeighborStates(n);
 
 		// empty cells do nothing
-		if (c.getFill() == possStates.get("tree"))	{
+		if (c.getColor() == possStates.get("tree"))	{
 			double probCatch = 0.15;
 
 			if (nStates.get("burning") >= 1)	{
@@ -35,7 +39,7 @@ public class SimulationFire extends Simulation	{
 
 			return "tree";
 		}		
-		else if (c.getFill() == possStates.get("burning"))	{
+		else if (c.getColor() == possStates.get("burning"))	{
 			return "empty";
 		}
 	}
@@ -46,24 +50,14 @@ public class SimulationFire extends Simulation	{
 	@Override
 	private HashMap<String, Integer> getNeighborStates(Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
-		int neighborsEmpty = 0;
-		int neighborsTree = 0;
 		int neighborsBurning = 0;
 
-		for (Cell neighbor:n)	{
-			if (neighbor.getFill() == possStates.get("empty"))	{
-				neighborsEmpty++;
-			}
-			else if (neighbor.getFill() == passStates.get("tree"))	{
-				neighborsTree++;
-			}
-			else if (neighbor.getFill() == passStates.get("burning"))	{
+		for (Cell neighbor:n.getNeighbors(grid, c))	{
+			if (neighbor.getColor() == possStates.get("burning"))	{
 				neighborsBurning++;
 			}
 		}
 
-		nStates.put("empty", neighborsEmpty);
-		nStates.put("tree", neighborsTree);		
 		nStates.put("burning", neighborsBurning);
 
 		return nStates;
