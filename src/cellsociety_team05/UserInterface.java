@@ -8,9 +8,7 @@ package cellsociety_team05;
 //handles mouse input
 //handles keyboard input
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -29,7 +27,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 public class UserInterface extends Runner {
 
 	public static final int BUTTON_SIZE_X = 80;
@@ -45,7 +42,6 @@ public class UserInterface extends Runner {
 	protected static Group root = new Group(); //change from static by adding labels directly to dropdown menu
 	protected Timeline animation;
 	protected KeyFrame myFrame;
-	private Desktop desktop = Desktop.getDesktop();
 
 	public void setupScene() {
 		myFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
@@ -55,7 +51,6 @@ public class UserInterface extends Runner {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(myFrame);
 
-		//add grid to the scene, root.getChildren.add(grid);
 		Button startButton = Factory.setButton(165, 470, 135, 38, "START");
 		startButton.getStyleClass().add("startButton");
 		root.getChildren().add(startButton);
@@ -74,6 +69,8 @@ public class UserInterface extends Runner {
 
 		FileChooser XMLchooser = new FileChooser();
 		XMLchooser.setTitle("Select Simulation");
+		FileChooser.ExtensionFilter XMLfilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
+		XMLchooser.getExtensionFilters().add(XMLfilter);
 
 		Label title = Factory.setLabel(20, 10, "CELL SOCIETY: Team 5");
 		title.getStyleClass().add("titleLabel");
@@ -96,9 +93,9 @@ public class UserInterface extends Runner {
 
 		Label fireLabel = Factory.setLabel(150, 565, "Fire");
 		fireLabel.getStyleClass().add("simLabel");
-		
-		Alert speedAlert = Factory.setAlert("Wrong User Input", "Please enter an integer value");
-		 
+
+		Alert speedAlert = Factory.setAlert("Wrong User Input", "Please enter a positive integer value");
+
 		Alert fileAlert = Factory.setAlert("Simulation File Chooser", "Incompatible file, please choose a simulation.xml file");
 
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -128,24 +125,31 @@ public class UserInterface extends Runner {
 			@Override
 			public void handle(ActionEvent event) {
 				File file = XMLchooser.showOpenDialog(myStage); //error
-				//check if file is null or if the file chosen is of the wrong format
-				//if XML file = simulation, print simulation type
-				//root.getChildren().add(conwayLabel);
-				//root.getChildren().add(predpreyLabel);
-				//root.getChildren().add(fireLabel);
+				if (file != null && file.getName() == "ConwaySim.xml") {
+					root.getChildren().add(conwayLabel);
+					//ParseXML(file);
+				} else if (file != null && file.getName() == "PredPreySim.xml") {
+					root.getChildren().add(predpreyLabel);
+					//ParseXML(file);
+				} else {
+					fileAlert.show();
 				}
+			}
 		});
 
 		speedTextField.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ENTER) {
 				//need alert if wrong type of input
 				try {
-				    int speed = Integer.parseInt(speedTextField.getText());
-				    SECOND_DELAY = speed;
+					int speed = Integer.parseInt(speedTextField.getText());
+					if (speed <= 0) {
+						speedAlert.show();
+					}
+					SECOND_DELAY = speed;
 					System.out.println(speed);
 				} catch (NumberFormatException e) {
-				    System.out.println("Wrong number");
-				    speedAlert.show();
+					System.out.println("Wrong number");
+					speedAlert.show();
 				}
 			}
 		});

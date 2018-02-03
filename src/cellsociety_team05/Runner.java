@@ -7,7 +7,6 @@ public class Runner extends Application{
 	
 	@Override
 	public void start(Stage arg0) throws Exception {
-		// TODO Auto-generated method stub
 		
 		Viewer scene = new Viewer(); //calls viewer
 		scene.paintScene(arg0);
@@ -15,6 +14,7 @@ public class Runner extends Application{
 	
 	protected void step (double elapsedTime) {
 		//animation
+		//calls update() 
 	}
 	
 	public static void main (String[] args) {
