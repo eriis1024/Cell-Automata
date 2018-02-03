@@ -7,99 +7,135 @@ package cellsociety_team05;
 //handles mouse input
 //handles keyboard input
 
-import javafx.collections.FXCollections;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-public class UserInterface {
-	protected StackPane root = new StackPane();
+//to do: create separate factory classes, write functions for buttons, finish layout, CSS file and final variables for button locations
 
+public class UserInterface extends Runner {
+	
+	public static final int BUTTON_SIZE_X = 80;
+	public static final int BUTTON_SIZE_Y = 70;
+	public static final int SIZE_X = 500;
+	public static final int SIZE_Y = 600;
+	public static final int FRAMES_PER_SECOND = 70;
+	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+	protected double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+	public static final Paint BACKGROUND_COLOR = Color.LIGHTGRAY;
+	protected Scene myScene;
+	protected Stage myStage;
+	protected static Group root = new Group(); //change from static by adding labels directly to dropdown menu
+	protected Timeline animation;
+	protected KeyFrame myFrame;
+	
 	public void setupScene() {
-		Button startButton = setButton(-70, 210, 100, 50, "Start");
-		//startButton.setStyle("-fx-background-color: #00ff00; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
+		myFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+				e -> step(SECOND_DELAY));
+		animation = new Timeline();
+		animation.getKeyFrames().clear();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(myFrame);
+		
+		//add grid to the scene, root.getChildren.add(grid);
+		Button startButton = Factory.setButton(165, 470, 135, 38, "START");
+		startButton.getStyleClass().add("startButton");
 		root.getChildren().add(startButton);
 
-		Button stopButton = setButton(-180, 210, 100, 50, "Stop");
-		//stopButton.setStyle("-fx-background-color: #ff0000; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
-		root.getChildren().add(stopButton);
+		Button pauseButton = Factory.setButton(165, 512, 135, 38, "STOP");
+		pauseButton.getStyleClass().add("pauseButton");
+		root.getChildren().add(pauseButton);
+		
+		Button stepButton = Factory.setButton(305, 470, 170, 80, "STEP");
+		stepButton.getStyleClass().add("stepButton");
+		root.getChildren().add(stepButton);
+		
+		Button simButton = Factory.setButton(30, 470, 130, 80, "Choose Simulation");
+		simButton.getStyleClass().add("stepButton");
+		root.getChildren().add(simButton);
+		
+		FileChooser XMLchooser = new FileChooser();
+		XMLchooser.setTitle("Select Simulation");
+		
+		Label title = Factory.setLabel(20, 10, "CELL SOCIETY: Team 5");
+		title.getStyleClass().add("titleLabel");
+		root.getChildren().add(title);
 
+		TextField speedTextField = Factory.setTextField(350, 560, 125, 30);
+		root.getChildren().add(speedTextField);
+		
+		Label speedLabel = Factory.setLabel(302, 565, "Speed:");
+		root.getChildren().add(speedLabel);
+		
+		Label simLabel = Factory.setLabel(30, 565, "Current Simulation: ");
+		root.getChildren().add(simLabel);
+		
+		Label conwayLabel = Factory.setLabel(150, 565, "Conway");
+		conwayLabel.getStyleClass().add("simLabel");
+		
+		Label predpreyLabel = Factory.setLabel(150, 565, "Predator-Prey");
+		predpreyLabel.getStyleClass().add("simLabel");
+		
+		Label fireLabel = Factory.setLabel(150, 565, "Fire");
+		fireLabel.getStyleClass().add("simLabel");
+		
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//startButton.setStyle("-fx-background-color: #98fb98; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
-				//stopButton.setStyle("-fx-background-color: #ff0000; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
-				//animation.start;
+				animation.play();
 			}
 		});
 
-		stopButton.setOnAction(new EventHandler<ActionEvent>() {
+		pauseButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				//stopButton.setStyle("-fx-background-color: #ffa07a; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
-				//startButton.setStyle("-fx-background-color: #00ff00; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
-				//animation.start;
+				animation.stop();
 			}
 		});
 		
-		Label title = setLabel(-90, -215, "CELL SOCIETY - Team 5" );
-		title.setStyle("-fx-font: 20 Arial");
-		root.getChildren().add(title);
-
-		Button stepButton = setButton(40, 210, 100, 50, "Step");
-		//stepButton.setStyle("-fx-background-color: #0000ff; -fx-font: 20 Arial; -fx-text-fill: #ffffff;");
-		root.getChildren().add(stepButton);
-
-		String[] simTypes = {"Conway", "Predator-Prey", "Fire"};
-		ChoiceBox<String> selectSim = setMenu(170, -210, "Select Simulation", simTypes);
-		root.getChildren().add(selectSim);
-
-		TextField speedTextField = setTextField(170, 220, 125, 30, "Speed: ");
-		root.getChildren().add(speedTextField);
+		stepButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				animation.stop();
+				animation.setCycleCount(1);
+				animation.play();
+			}
+		});
+		
+		simButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				XMLchooser.showOpenDialog(myStage); //error
+				//check if file is null or if the file chosen is of the wrong format
+				//if XML file = simulation, print simulation type
+				//root.getChildren().add(conwayLabel);
+				//root.getChildren().add(predpreyLabel);
+				//root.getChildren().add(fireLabel);
+			}
+		});
+		
+		 speedTextField.setOnKeyPressed(event -> {
+		      if (event.getCode() == KeyCode.ENTER) {
+		    	  	int speed = Integer.parseInt(speedTextField.getText());
+		        SECOND_DELAY = speed;
+		        System.out.println(speed);
+		      }
+		    });
+		
 	}
-
-	//-fx-border-width, -fx-border-color, -fx-background-color, -fx-font-size, -fx-text-fill
-	private Button setButton(int x, int y, int size_x, int size_y, String text) {
-		Button button = new Button();
-		button.setText(text);
-		button.setTranslateX(x);
-		button.setTranslateY(y);
-		button.setMaxSize(size_x, size_y);
-		return button;
-	}
-
-	private ChoiceBox<String> setMenu(int x, int y, String label, String[] items) {
-		ChoiceBox<String> menu = new ChoiceBox<String>();
-		menu.setItems(FXCollections.observableArrayList(items));
-		menu.setTranslateX(x);
-		menu.setTranslateY(y);
-		Label lbl = setLabel(x-5, y-25, label); //make applicable to all cases (size)
-		root.getChildren().add(lbl);
-		return menu;
-	}
-
-	private TextField setTextField(int x, int y, int size_x, int size_y, String label) {
-		TextField textField = new TextField();
-		textField.setTranslateX(x);
-		textField.setTranslateY(y);
-		textField.setMaxSize(size_x, size_y);
-		Label lbl = setLabel(x-(size_x/3) + 2, y-size_y, label);
-		root.getChildren().add(lbl);
-		return textField;
-	}
-
-	private Label setLabel(int x, int y, String text) {
-		Label lbl = new Label();
-		lbl.setText(text);
-		lbl.setTranslateX(x);
-		lbl.setTranslateY(y);
-		return lbl;
-	}
-
+	
 	//	protected void handleKeyInput (KeyCode code) { //handles keyboard/mouse input
 	//		if (code == KeyCode.RIGHT) {
 	//
