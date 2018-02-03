@@ -31,7 +31,7 @@ public class BasicGrid implements Grid {
 	}
 	
 	public void set(int x, int y, Color c) {
-		get(x,y).setColor(c);
+		get(x,y).setFill(c);
 	}
 	
 	public void insert(Cell c) {
@@ -44,7 +44,7 @@ public class BasicGrid implements Grid {
 	
 	private void init(ArrayList<Cell> cells) {
 		for(int i = 0; i<myWidth; i++) {
-			for(int j = 0; j<myHeight; j++) insert(new Cell(i, j, defaultColor));
+			for(int j = 0; j<myHeight; j++) insert(new Cell(defaultColor, i, j));
 		}
 		for (Cell c: cells) insert(c);
 	}

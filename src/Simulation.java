@@ -1,6 +1,5 @@
-import java.util.ArrayList;
+import java.util.*;
 import java.util.HashMap;
-
 import javafx.scene.paint.Color;
 
 public abstract class Simulation {
@@ -8,6 +7,15 @@ public abstract class Simulation {
 	protected HashMap<String, Color> states;
 	protected Grid myGrid;
 	protected Neighborhood myNeighborhood;
+	public static final List<String> SUPPORTED_TYPES = Arrays.asList(new String[] {
+	        "conway",
+	        "segregation",
+	        "fire",
+	        "predprey"});
+	public static final List<String> DATA_FIELDS = Arrays.asList(new String[] {
+	        "head",
+	        "dimensions",
+	        "cells"});
 	
 	public Simulation(Grid g) {
 		myGrid = g;
