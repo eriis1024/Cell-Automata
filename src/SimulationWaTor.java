@@ -10,14 +10,12 @@ import javafx.scene.paint.Color;
 public class SimulationWaTor extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.BLUE;
 
-	public int START_PREY;
-	public int START_PRED;
 	public int PREY_BREED_AGE;
 	public int PRED_BREED_AGE;
 	public int PRED_ENERGY;
 	public int PRED_REGAIN_ENERGY;
 
-	public SimulationWaTor(Grid g, int start_prey, int start_pred, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
+	public SimulationWaTor(Grid g, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
 		super(g);
 		possStates = new HashMap<String, Color>()	{{
 			put("FREE", Color.BLUE);
@@ -26,8 +24,6 @@ public class SimulationWaTor extends Simulation	{
 		}};
 		neighborhood = new NonDiagNeighborhood();
 
-		START_PREY = start_prey;
-		START_PRED = start_pred;
 		PREY_BREED_AGE = prey_breed_age;
 		PRED_BREED_AGE = pred_breed_age;
 		PRED_ENERGY = pred_energy;
@@ -66,21 +62,27 @@ public class SimulationWaTor extends Simulation	{
 
 		c.breedAge++;
 		if (c.getColor() == possStates.get("PREDATOR"))	{
-			c.loseEnergy();	// predator loses energy every round, no matter what
-			checkAlive(c);
-
 			if (nStates.containsKey("PREY"))	{	// if any prey to eat in neighborhood
 				addToMove(c, nStates, "PREY", toMove);	// move to prey location (random if multiple)
 				c.eat(PRED_REGAIN_ENERGY);	// regain energy from eating
+
+				c.loseEnergy();	// predator loses energy every round, no matter what
+				checkAlive(c);
 
 				return checkBreed(c, updatedGrid);
 			}
 			else if (nStates.containsKey("FREE"))	{	// if no prey, but free cells
 				addToMove(c, nStates, "FREE", toMove);	// move predator to free cell (random if multiple)
 
+				c.loseEnergy();	// predator loses energy every round, no matter what
+				checkAlive(c);
+
 				return checkBreed(c, updatedGrid);
 			}
 			else	{	// if nowhere to move (all neighbors are also predators), stay in place
+				c.loseEnergy();	// predator loses energy every round, no matter what
+				checkAlive(c);
+
 				return "PREDATOR";
 			}
 		}
@@ -165,8 +167,11 @@ public class SimulationWaTor extends Simulation	{
 		}
 	}
 
-	private void checkAlive()	{
-	]
+	private void checkAlive(Cell c)	{
+		if (c.energy == 0)	{
+
+		}
+	}
 
 	/**
 	 *

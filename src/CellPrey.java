@@ -9,7 +9,6 @@ import javafx.scene.shape.Polygon;
 public class CellPrey extends Cell	{
 	public int breedAge;
 
-
 	/**
 	 *
 	 */

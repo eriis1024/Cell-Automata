@@ -16,10 +16,10 @@ public class CellPredator extends Cell	{
 	 * @param
 	 * @param
 	 */
-	public CellPredator(Color c, int x, int y)	{
+	public CellPredator(Color c, int x, int y, int energyStart)	{
 		super(c, x, y);
 		breedAge = 0;
-		energy = ;
+		energy = energyStart;
 	}
 
 	public void loseEnergy()	{
