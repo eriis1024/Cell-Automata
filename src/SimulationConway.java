@@ -21,6 +21,8 @@ public class SimulationConway extends Simulation	{
 	/**
 	 * gets what state Ceel c should be after update
 	 * This is where the conditions of simulation are held
+	 * @param
+	 * @param
 	 */
 	@Override
 	private String getNextState(Cell c, Neighborhood n)	{
@@ -48,6 +50,8 @@ public class SimulationConway extends Simulation	{
 
 	/**
 	 * Returns number of cells in each state, in Cell c's neighborhood
+	 * @param
+	 * @param
 	 */
 	@Override
 	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{

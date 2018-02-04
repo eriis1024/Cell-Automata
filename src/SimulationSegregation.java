@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 
 public class SimulationSegregation extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.WHITE;
-	public static final double SATISFIED = ______;	// get from XML
+	public static final double SATISFIED = ;	// get from XML
 
 	ArrayList<Cell> cellstoMove;
 
@@ -36,6 +36,8 @@ public class SimulationSegregation extends Simulation	{
 	/**
 	 * gets what state Ceel c should be after update
 	 * This is where the conditions of simulation are held
+	 * @param
+	 * @param
 	 */
 	@Override
 	private String getNextState(Cell c, Neighborhood n)	{
@@ -53,9 +55,11 @@ public class SimulationSegregation extends Simulation	{
 
 	/**
 	 * Returns number of cells in each state, in Cell c's neighborhood
+	 * @param
+	 * @param
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Neighborhood n)	{
+	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
 		int neighborsX = 0;
 		int neighborsO = 0;
@@ -76,7 +80,8 @@ public class SimulationSegregation extends Simulation	{
 	}
 
 	/**
-	 * Helper method for getnextState, gets state of a cell as a String
+	 * Helper method for getnextState, gets state of a Cell as a String from Cell's color
+	 * @param
 	 */
 	private String getState(Cell c)	{
 		for (Map.Entry state:possStates.entrySet())	{
@@ -87,7 +92,7 @@ public class SimulationSegregation extends Simulation	{
 	}
 
 	/**
-	 *
+	 * Gets Cells in grid that are *currently* empty
 	 */
 	private ArrayList<Cell> getEmptyCells()	{
 		ArrayList<Cell> emptyCells = new ArrayList<Cell>();
@@ -104,9 +109,9 @@ public class SimulationSegregation extends Simulation	{
 	}
 
 	/**
-	 * Move dissatisfied Cells to random empty spot on board
+	 * Move dissatisfied Cells to random empty spot on next, updated board
+	 * @param
 	 */
-	@Override
 	private void moveCells(ArrayList<Cell> toMove)	{
 		ArrayList emptyCells = getEmptyCells();
 

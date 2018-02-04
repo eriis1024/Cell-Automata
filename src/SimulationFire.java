@@ -22,10 +22,12 @@ public class SimulationFire extends Simulation	{
 	/**
 	 * gets what state Ceel c should be after update
 	 * This is where the conditions of simulation are held
+	 * @param
+	 * @param
 	 */
 	@Override
 	private String getNextState(Cell c, Neighborhood n)	{
-		HashMap<String, Integer> nStates = getNeighborStates(n);
+		HashMap<String, Integer> nStates = getNeighborStates(c, n);
 
 		// empty cells do nothing
 		if (c.getColor() == possStates.get("TREE"))	{
@@ -48,9 +50,11 @@ public class SimulationFire extends Simulation	{
 
 	/**
 	 * Returns number of cells in each state, in Cell c's neighborhood
+	 * @param
+	 * @param
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Neighborhood n)	{
+	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
 		int neighborsBurning = 0;
 

@@ -27,7 +27,7 @@ public abstract class Simulation	{
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
 			for (int j = 0; j < grid.getHeight(); j++; )	{
-				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood.getNeighbors(grid, grid.get(i, j))));
+				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood));
 				updatedGrid.set(i, j, nextState);
 			}
 		}
@@ -42,10 +42,4 @@ public abstract class Simulation	{
 	 * Called by getNextState, helper method to list the number of cells in each state in neighborhood
 	 */
 	private abstract HashMap<String, Integer> getNeighborStates(Neighborhood n);
-
-	/**
-	 * For Segreation and WaTor simulations, need to move cells in addition to changing states
-	 */
-	private abstract void moveCells(ArrayList<Cell> cellstoMove);
-	}
 }
