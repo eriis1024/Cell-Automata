@@ -42,6 +42,9 @@ public class SimulationSegregation extends Simulation	{
 		moveCells(updatedGrid, cellstoMove);
 	}
 
+	private String getNextState(Cell c, Neighborhood n)	{
+	}
+
 	/**
 	 * gets what state Ceel c should be after update
 	 * This is where the conditions of simulation are held
@@ -61,6 +64,7 @@ public class SimulationSegregation extends Simulation	{
 			return getState(c);	// cell does not move or change state
 		}
 	}
+
 
 	/**
 	 * Returns number of cells in each state, in Cell c's neighborhood
@@ -114,7 +118,7 @@ public class SimulationSegregation extends Simulation	{
 
 		// move cell in UPDATEGRID
 		for (Cell moveMe:toMove)	{
-			Cell randomEmpty = getEmptyCells.get(Math.random() * emptyCells.size());	// find a place to move unsatisfied cell
+			Cell randomEmpty = getEmptyCells().get((int)Math.random() * emptyCells.size());	// find a place to move unsatisfied cell
 			randomEmpty.colorCell(moveMe.getColor());	// "put" cell in empty spot
 			moveMe.colorCell(possStates.get("EMPTY"));	// make spot cell left empty
 

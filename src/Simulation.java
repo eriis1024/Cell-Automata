@@ -18,7 +18,7 @@ public abstract class Simulation	{
         "Conway",
         "Segregation",
         "Fire",
-        "PredPrey"});
+        "WaTor"});
 
 	/**
 	 * @param Grid
@@ -61,7 +61,7 @@ public abstract class Simulation	{
 	/**
 	 * Called by getNextState, helper method to list the number of cells in each state in neighborhood
 	 */
-	protected abstract HashMap<String, Integer> getNeighborStates(Neighborhood n);
+	protected abstract HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n);
 
 	/**
 	 *

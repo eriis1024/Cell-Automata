@@ -3,6 +3,7 @@
  * Started 31 Jan 18
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -18,7 +19,7 @@ public class SimulationWaTor extends Simulation	{
 	public SimulationWaTor(Grid g, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
 		super(g);
 		possStates = new HashMap<String, Color>()	{{
-			put("FREE", Color.BLUE);
+			put("EMPTY", Color.BLUE);
 			put("PREY", Color.YELLOW);
 			put("PREDATOR", Color.BLACK);
 		}};
@@ -54,10 +55,10 @@ public class SimulationWaTor extends Simulation	{
 	 * This is where the conditions of simulation are held
 	 * @param
 	 * @param
+	 * @param
 	 */
-	@Override
 	private String getNextState(Cell c, Neighborhood n, Grid updatedGrid)	{
-		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStates(n);
+		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStateLocs(c, n);
 		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
 
 		c.breedAge++;
@@ -71,8 +72,8 @@ public class SimulationWaTor extends Simulation	{
 
 				return checkBreed(c, updatedGrid);
 			}
-			else if (nStates.containsKey("FREE"))	{	// if no prey, but free cells
-				addToMove(c, nStates, "FREE", toMove);	// move predator to free cell (random if multiple)
+			else if (nStates.containsKey("EMPTY"))	{	// if no prey, but EMPTY cells
+				addToMove(c, nStates, "EMPTY", toMove);	// move predator to EMPTY cell (random if multiple)
 
 				c.loseEnergy();	// predator loses energy every round, no matter what
 				checkAlive(c);
@@ -87,8 +88,8 @@ public class SimulationWaTor extends Simulation	{
 			}
 		}
 		else if (c.getColor() == possStates.get("PREY"))	{
-			if (nStates.containsKey("FREE"))	{	// if free spots
-				addToMove(c, nStates, "FREE", toMove);
+			if (nStates.containsKey("EMPTY"))	{	// if EMPTY spots
+				addToMove(c, nStates, "EMPTY", toMove);
 				checkBreed(c, updatedGrid);
 			}
 			else	{	// no spaces to move to, no movement, no reproduction
@@ -103,18 +104,21 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private NeighborInfo getNeighborStates(Cell c, Neighborhood n)	{
+	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
+	}
+
+	private HashMap<String, ArrayList<Point2D>> getNeighborStateLocs(Cell c, Neighborhood n)	{
 		HashMap<String, ArrayList<Point2D>> nStates = new HashMap<String, ArrayList<Point2D>>();
 
 		for (Cell neighbor:n.getNeighbors(grid, c))	{
-			if (neighbor.getColor() == possStates.get("FREE"))	{
-				if (!nStates.containsKey("FREE"))	{
+			if (neighbor.getColor() == possStates.get("EMPTY"))	{
+				if (!nStates.containsKey("EMPTY"))	{
 					ArrayList<Point2D> indices = new ArrayList<Point2D>();
 					indices.add(new Point2D(neighbor.getX(), neighbor.getY()));
-					nStates.put("FREE", indices);
+					nStates.put("EMPTY", indices);
 				}
 				else	{
-					nStates.get("FREE").add(new Point2D(neighbor.getX(), neighbor.getY()));
+					nStates.get("EMPTY").add(new Point2D(neighbor.getX(), neighbor.getY()));
 				}
 			}
 			else if (neighbor.getColor() == possStates.get("PREY"))	{
@@ -150,8 +154,8 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 */
 	public void addToMove(Cell c, HashMap<String, ArrayList<Point2D>> nStates, String state, HashMap<Cell, Point2D> toMove)	{
-		int moveTo = (int) Math.random() * nStates.get(state).length();
-		toMove.put(c, mStates.get(state).get(moveTo));
+		int moveTo = (int) Math.random() * nStates.get(state).size();
+		toMove.put(c, nStates.get(state).get(moveTo));
 	}
 
 	/**
@@ -187,7 +191,7 @@ public class SimulationWaTor extends Simulation	{
 				return "PREY";
 			}
 			else	{
-				return "FREE";
+				return "EMPTY";
 			}
 		}
 		else if (c.getColor() == possStates.get("PREDATOR")) {
@@ -199,7 +203,7 @@ public class SimulationWaTor extends Simulation	{
 				return "PREDATOR";	// put NEW predator cell at this index
 			}
 			else	{
-				return "FREE";
+				return "EMPTY";
 			}
 		}
 }
