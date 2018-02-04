@@ -48,7 +48,7 @@ public class SimulationWaTor extends Simulation	{
 
 		// Above code is copy of Simulation superclass update, but passing getNextState updatedGrid also
 
-		moveCells(updatedGrid, HashMap<Cell, Point2D> toMove);
+		moveCells(updatedGrid, toMove);
 	}
 
 	/**
@@ -67,8 +67,7 @@ public class SimulationWaTor extends Simulation	{
 				addToMove(c, nStates, "PREY", toMove);	// move to prey location (random if multiple)
 				c.eat(PRED_REGAIN_ENERGY);	// regain energy from eating
 
-				c.loseEnergy();	// predator loses energy every round, no matter what
-				if (!checkAlive(c))	{
+				if (!checkAlive(c))	{	// if dead, end
 					return "FREE";
 				}
 
@@ -77,16 +76,14 @@ public class SimulationWaTor extends Simulation	{
 			else if (nStates.containsKey("EMPTY"))	{	// if no prey, but EMPTY cells
 				addToMove(c, nStates, "EMPTY", toMove);	// move predator to EMPTY cell (random if multiple)
 
-				c.loseEnergy();	// predator loses energy every round, no matter what
-				if (!checkAlive(c))	{
+				if (!checkAlive(c))	{	// if dead, end
 					return "FREE";
 				}
 
 				return checkBreed(c, updatedGrid);
 			}
 			else	{	// if nowhere to move (all neighbors are also predators), stay in place
-				c.loseEnergy();	// predator loses energy every round, no matter what
-				if (!checkAlive(c))	{
+				if (!checkAlive(c))	{	// if dead, end
 					return "FREE";
 				}
 
@@ -178,6 +175,7 @@ public class SimulationWaTor extends Simulation	{
 	}
 
 	private boolean checkAlive(Cell c)	{
+		c.loseEnergy();	// predator loses energy every round, no matter what
 		if (c.energy == 0)	{
 			return false;
 		}

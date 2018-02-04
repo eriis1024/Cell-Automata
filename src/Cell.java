@@ -37,14 +37,14 @@ public class Cell extends Polygon	{
 	/**
 	 *
 	 */
-	public void getX()	{
+	public int getX()	{
 		return xInd;
 	}
 
 	/**
 	 *
 	 */
-	public void getY()	{
+	public int getY()	{
 		return xInd;
 	}
 
