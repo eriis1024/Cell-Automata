@@ -13,7 +13,8 @@ public class SimulationWaTor extends Simulation	{
 	public static final int START_PRED = ;
 	public static final int PREY_BREED_AGE = ;
 	public static final int PRED_BREED_AGE = ;
-	public static final int PRED_STARVE_AGE = ;
+	public static final int PRED_ENERGY = ;
+	public static final int PRED_REGAIN_ENERGY = ;
 
 	public SimulationWaTor()	{
 		super();
@@ -31,6 +32,7 @@ public class SimulationWaTor extends Simulation	{
 	@Override
 	public void update()	{
 		super.update();
+		moveCells(updatedGrid, );
 	}
 
 	/**
@@ -42,61 +44,42 @@ public class SimulationWaTor extends Simulation	{
 	@Override
 	private String getNextState(Cell c, Neighborhood n)	{
 		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStates(n);
+		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
 
-		// add to breed timer
+		c.breedAge++;
 		if (c.getColor() == possStates.get("PREDATOR"))	{
 			if (nStates.containsKey("PREY"))	{	// if any prey to eat
-				// move to prey (random if multiple)
-				// lose energy
-				// regain emergy
-				if ()	{	// breed
-					// reset breed timer
-					return "PREDATOR";
-				}
-				else	{
-					return "FREE";
-				}
+				addToMove(c, nStates, "PREY", toMove);
+				loseEnergy(c);
+				eat(c);
+
+				return checkBreed(c);
 			}
 			else if (nStates.containsKey("FREE"))	{	// if free spots
-				// randomly move to free spot
-				// lose one energy
-				if ()	{	// breed
-					// reset breed timer
-					return "PREDATOR";
-				}
-				else	{
-					return "FREE";
-				}
+				addToMove(c, nStates, "FREE", toMove);
+				loseEnergy(c);
+
+				return checkBreed(c);
 			}
 			else	{	// stay
-				// lose one energy
+				loseEnergy(c);
+
 				return "PREDATOR";
 			}
 		}
 		else if (c.getColor() == possStates.get("PREY"))	{
 			if (nStates.containsKey("FREE"))	{	// if free spots
-				// randomly move to free spot
-				// lose one energy
-				if ()	{	// breed
-					// reset brred timer
-					return "PREY";
-				}
-				else	{
-					return "FREE";
-				}
+				addToMove(c, nStates, "FREE", toMove);
+				loseEnergy(c);
+				checkBreed(c);
 			}
 			else	{	// no spaces to move to, no movement, no reproduction
 				return "PREY";
 			}
 		}
 		else	{
-			// lose one energy
-			if ()	{	// breed
-				return "PREDATOR";
-			}
-			else	{
-				return "FREE";
-			}
+			loseEnergy(c);
+			checkBreed(c);
 		}
 	}
 
@@ -149,8 +132,65 @@ public class SimulationWaTor extends Simulation	{
 	 *
 	 * @param
 	 * @param
+	 * @param
+	 * @param
 	 */
-	private void moveCell(Cell c, Point2D newLoc)	{
-
+	public void addToMove(Cell c, HashMap<String, ArrayList<Point2D>> nStates, String state, HashMap<Cell, Point2D> toMove)	{
+		int moveTo = (int) Math.random() * nStates.get(state).length();
+		toMove.put(c, mStates.get(state).get(moveTo));
 	}
+
+	/**
+	 *
+	 * @param
+	 * @param
+	 */
+	private void moveCells(Grid updatedGrid, HashMap<Cell, Point2D> toMove)	{
+		for (Cell sprite:toMove.keySet())	{
+			sprite.setX((int)toMove.get(sprite).getX());
+			sprite.setY((int)toMove.get(sprite).getY());
+			updatedGrid.insert(sprite);
+		}
+	}
+
+	/**
+	 *
+	 * @param
+	 */
+	private void loseEnergy(Cell c)	{
+		c.energy--;
+	}
+
+	/**
+	 *
+	 * @param
+	 */
+	private void eat(Cell c)	{
+		c.energy += PRED_REGAIN_ENERGY;
+	}
+
+	/**
+	 *
+	 * @param
+	 */
+	private String checkBreed(Cell c)	{
+		if (c.getColor() == possStates.get("PREY"))	{
+			if (c.breedAge >= PREY_BREED_AGE)	{	// breed
+				c.breedAge = 0;// insert new prey cell
+				return "PREY";
+			}
+			else	{
+				return "FREE";
+			}
+		}
+		else if (c.getColor() == possStates.get("PREDATOR")) {
+			if (c.breedAge >= PRED_BREED_AGE)	{	// breed
+				c.breedAge = 0;
+				// insert new predator cell
+				return "PREDATOR";	// put NEW predator cell at this index
+			}
+			else	{
+				return "FREE";
+			}
+		}
 }

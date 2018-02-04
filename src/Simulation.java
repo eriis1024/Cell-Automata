@@ -11,6 +11,11 @@ public abstract class Simulation	{
 	protected HashMap<String, Color> possStates;
 	protected Grid grid;
 	protected Neighborhood neighborhood;
+	public static final List<String> SUPPORTED_TYPES = Arrays.asList(new String[] {
+        "Conway",
+        "Segregation",
+        "Fire",
+        "PredPrey"});
 
 	/**
 	 * @param Grid

@@ -7,6 +7,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class CellPrey extends Cell	{
+	public int breedAge;
+
+
+	/**
+	 *
+	 */
 	public CellPrey(Color c, int x, int y)	{
+		super(c, x, y);
+		breedAge = 0;
 	}
 }

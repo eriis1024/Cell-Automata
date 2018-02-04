@@ -7,6 +7,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class CellPredator extends Cell	{
-	public CellPrey(Color c, int x, int y)	{
+	public int breedAge;
+	public int energy;
+
+	/**
+	 *
+	 * @param
+	 * @param
+	 * @param
+	 */
+	public CellPredator(Color c, int x, int y)	{
+		super(c, x, y);
+		breedAge = 0;
+		energy = ;
 	}
 }
