@@ -9,11 +9,12 @@ import javafx.scene.paint.Color;
 
 public class SimulationSegregation extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.WHITE;
-	public static final double SATISFIED = ;	// get from XML
+
+	public double SATISFIED;	// get from XML
 
 	ArrayList<Cell> cellstoMove;
 
-	public SimulationSegregation()	{
+	public SimulationSegregation(int satisfied)	{
 		super();
 		possStates = new HashMap<String, Color>()	{{
 			put("EMPTY", Color.WHITE);
@@ -21,6 +22,8 @@ public class SimulationSegregation extends Simulation	{
 			put("O", Color.RED);
 		}};
 		neighborhood = new BasicNeighborhood();
+
+		SATISFIED = satisfied;
 	}
 
 	/**

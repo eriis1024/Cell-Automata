@@ -9,14 +9,15 @@ import javafx.scene.paint.Color;
 
 public class SimulationWaTor extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.BLUE;
-	public static final int START_PREY = ;
-	public static final int START_PRED = ;
-	public static final int PREY_BREED_AGE = ;
-	public static final int PRED_BREED_AGE = ;
-	public static final int PRED_ENERGY = ;
-	public static final int PRED_REGAIN_ENERGY = ;
 
-	public SimulationWaTor()	{
+	public int START_PREY;
+	public int START_PRED;
+	public int PREY_BREED_AGE;
+	public int PRED_BREED_AGE;
+	public int PRED_ENERGY;
+	public int PRED_REGAIN_ENERGY;
+
+	public SimulationWaTor(int start_prey, int start_pred, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
 		super();
 		possStates = new HashMap<String, Color>()	{{
 			put("FREE", Color.BLUE);
@@ -24,6 +25,13 @@ public class SimulationWaTor extends Simulation	{
 			put("PREDATOR", Color.BLACK);
 		}};
 		neighborhood = new NonDiagNeighborhood();
+
+		START_PREY = start_prey;
+		START_PRED = start_pred;
+		PREY_BREED_AGE = prey_breed_age;
+		PRED_BREED_AGE = pred_breed_age;
+		PRED_ENERGY = pred_energy;
+		PRED_REGAIN_ENERGY = pred_regain_energy;
 	}
 
 	/**
@@ -48,38 +56,31 @@ public class SimulationWaTor extends Simulation	{
 
 		c.breedAge++;
 		if (c.getColor() == possStates.get("PREDATOR"))	{
+			c.loseEnergy();
 			if (nStates.containsKey("PREY"))	{	// if any prey to eat
 				addToMove(c, nStates, "PREY", toMove);
-				loseEnergy(c);
-				eat(c);
+				c.eat(PRED_REGAIN_ENERGY);
 
 				return checkBreed(c);
 			}
 			else if (nStates.containsKey("FREE"))	{	// if free spots
 				addToMove(c, nStates, "FREE", toMove);
-				loseEnergy(c);
 
 				return checkBreed(c);
 			}
 			else	{	// stay
-				loseEnergy(c);
-
 				return "PREDATOR";
 			}
 		}
 		else if (c.getColor() == possStates.get("PREY"))	{
 			if (nStates.containsKey("FREE"))	{	// if free spots
 				addToMove(c, nStates, "FREE", toMove);
-				loseEnergy(c);
+				c.loseEnergy();
 				checkBreed(c);
 			}
 			else	{	// no spaces to move to, no movement, no reproduction
 				return "PREY";
 			}
-		}
-		else	{
-			loseEnergy(c);
-			checkBreed(c);
 		}
 	}
 
@@ -151,22 +152,6 @@ public class SimulationWaTor extends Simulation	{
 			sprite.setY((int)toMove.get(sprite).getY());
 			updatedGrid.insert(sprite);
 		}
-	}
-
-	/**
-	 *
-	 * @param
-	 */
-	private void loseEnergy(Cell c)	{
-		c.energy--;
-	}
-
-	/**
-	 *
-	 * @param
-	 */
-	private void eat(Cell c)	{
-		c.energy += PRED_REGAIN_ENERGY;
 	}
 
 	/**

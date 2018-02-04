@@ -21,4 +21,12 @@ public class CellPredator extends Cell	{
 		breedAge = 0;
 		energy = ;
 	}
+
+	public void loseEnergy()	{
+		energy--;
+	}
+
+	public void eat(int energyRegained)	{
+		energy += energyRegained;
+	}
 }
