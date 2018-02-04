@@ -59,7 +59,7 @@ public class SimulationWaTor extends Simulation	{
 	}
 
 	/**
-	 * gets what state Ceel c should be after update
+	 * gets what state Cell c should be after update
 	 * This is where the conditions of simulation are held
 	 * @param
 	 * @param
@@ -111,6 +111,8 @@ public class SimulationWaTor extends Simulation	{
 		else	{	// free cell, assume stay free and later move method will cover if necessary
 			return "FREE";
 		}
+
+		return null;
 	}
 
 	/**
@@ -120,6 +122,7 @@ public class SimulationWaTor extends Simulation	{
 	 */
 	@Override
 	protected HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
+		return null;
 	}
 
 	private HashMap<String, ArrayList<Point2D>> getNeighborStateLocs(Cell c, Neighborhood n)	{
@@ -169,7 +172,7 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 */
 	private void addToMove(Cell c, HashMap<String, ArrayList<Point2D>> nStates, String state, HashMap<Cell, Point2D> toMove)	{
-		int moveTo = (int) Math.random() * nStates.get(state).size();
+		int moveTo = (int) (Math.random() * nStates.get(state).size());
 		toMove.put(c, nStates.get(state).get(moveTo));
 	}
 
@@ -227,5 +230,7 @@ public class SimulationWaTor extends Simulation	{
 				return "EMPTY";
 			}
 		}
+
+		return null;
 	}
 }
