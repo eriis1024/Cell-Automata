@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import javafx.scene.paint.Color;
 
 public interface Grid{

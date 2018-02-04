@@ -1,8 +1,6 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import javafx.scene.paint.Color;

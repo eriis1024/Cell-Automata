@@ -6,6 +6,9 @@
 //handles mouse input
 //handles keyboard input
 
+import java.io.File;
+import java.util.ArrayList;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -19,10 +22,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Duration;
 
-public class UserInterface extends Runner {
+public class UserInterface extends TestRunner {
 
 	public static final int BUTTON_SIZE_X = 80;
 	public static final int BUTTON_SIZE_Y = 70;
@@ -33,17 +38,20 @@ public class UserInterface extends Runner {
 	protected double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 	public static final Paint BACKGROUND_COLOR = Color.LIGHTGRAY;
 	protected Scene myScene;
-	protected Stage myStage;
 	protected Group root = new Group(); 
 	protected Timeline animation;
 	protected KeyFrame myFrame;
+	protected Grid myGrid;
+	protected Simulation mySim;
+	protected ArrayList<Rectangle> gridCells = new ArrayList<Rectangle>();
 
 	public void setupScene() {
+		
 		myFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 				e -> step(SECOND_DELAY));
 		animation = new Timeline();
 		animation.getKeyFrames().clear();
-		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.setCycleCount(50);
 		animation.getKeyFrames().add(myFrame);
 
 		Button startButton = Factory.setButton(165, 470, 135, 38, "START");
@@ -61,13 +69,6 @@ public class UserInterface extends Runner {
 		Button simButton = Factory.setButton(30, 470, 130, 80, "Choose Simulation");
 		simButton.getStyleClass().add("stepButton");
 		root.getChildren().add(simButton);
-
-		//		FileChooser XMLchooser = new FileChooser();
-		//		XMLchooser.setTitle("Select Simulation");
-		//		FileChooser.ExtensionFilter XMLfilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
-		//		XMLchooser.getExtensionFilters().add(XMLfilter);
-		//add file filtering so user can only choose simulation file
-		//erikriis/eclipse-workspace/cellsociety_team05/data
 
 		Label title = Factory.setLabel(20, 10, "CELL SOCIETY: Team 5");
 		title.getStyleClass().add("titleLabel");
@@ -93,7 +94,12 @@ public class UserInterface extends Runner {
 
 		Alert speedAlert = Factory.setAlert("Wrong User Input", "Please enter a positive integer value");
 
-		//Alert fileAlert = Factory.setAlert("Simulation File Chooser", "Incompatible file, please choose a simulation.xml file");
+		Alert fileAlert = Factory.setAlert("Simulation File Chooser", "Incompatible file, please choose a simulation.xml file");
+
+		FileChooser XMLChooser = new FileChooser();
+		XMLChooser.setTitle("Open Data File");
+		XMLChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		XMLChooser.getExtensionFilters().setAll(new ExtensionFilter("Text Files", "*.xml"));
 
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -112,27 +118,36 @@ public class UserInterface extends Runner {
 		stepButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				animation.stop();
+				//animation.stop();
 				animation.setCycleCount(1);
 				animation.play();
 			}
 		});
 
-//		simButton.setOnAction(new EventHandler<ActionEvent>() {
-//			@Override
-//			public void handle(ActionEvent event) {
-//				File file = XMLchooser.showOpenDialog(myStage); //error
-//				if (file != null && file.getName() == "ConwaySim.xml") {
-//					root.getChildren().add(conwayLabel);
-//					//ParseXML(file);
-//				} else if (file != null && file.getName() == "PredPreySim.xml") {
-//					root.getChildren().add(predpreyLabel);
-//					//ParseXML(file);
-//				} else {
-//					fileAlert.show();
-//				}
-//			}
-//		});
+		simButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				File dataFile = XMLChooser.showOpenDialog(myStage);
+				if (dataFile != null) {
+					mySim = new ParseXML("simulation").getSimulation(dataFile);
+					System.out.println(myConway);
+					root.getChildren().add(conwayLabel);
+					myGrid = mySim.getGrid();
+					int scalingFactorX = 400/myGrid.getWidth();
+					int scalingFactorY = 400/myGrid.getHeight();
+					for (int i = 0; i < myGrid.getWidth(); i++) {
+						for (int j=0; j<myGrid.getHeight(); j++) {
+							Cell cell = myGrid.get(i, j);
+							Rectangle add = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
+							gridCells.add(add);
+							root.getChildren().add(add);
+						}
+					}
+				} else {
+					fileAlert.show();
+				}
+			}
+		});
 
 		speedTextField.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ENTER) {
@@ -149,5 +164,21 @@ public class UserInterface extends Runner {
 				}
 			}
 		});
+	}
+
+	protected void step (double elapsedTime) {
+		int scalingFactorX = 400/myGrid.getWidth();
+		int scalingFactorY = 400/myGrid.getHeight();
+		for(int i = 0; i < gridCells.size(); i++) {
+			root.getChildren().remove(gridCells.get(i));
+		}
+		Grid newGrid = mySim.update();
+		for (int i = 0; i < newGrid.getWidth(); i++) {
+			for (int j=0; j<newGrid.getHeight(); j++) {
+				Cell cell = newGrid.get(i, j);
+				Rectangle add1 = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
+				root.getChildren().add(add1);
+			}
+		}
 	}
 }

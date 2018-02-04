@@ -19,7 +19,7 @@ public abstract class Simulation {
 		myNeighborhood = new BasicNeighborhood();
 	}
 	
-	public void update() {
+	public Grid update() {
 		Grid nextGrid = myGrid.copy();
 		
 		for(int i=0; i<myGrid.getWidth(); i++) {
@@ -28,7 +28,7 @@ public abstract class Simulation {
 				nextGrid.set(i,j, nc);
 			}
 		}
-		myGrid = nextGrid;
+		return myGrid = nextGrid;
 	}
 	
 	protected abstract String nextState(Grid g, Cell c, Neighborhood n);

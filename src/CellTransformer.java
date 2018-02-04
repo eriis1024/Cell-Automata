@@ -3,10 +3,9 @@ import javafx.scene.shape.Rectangle;
 
 public class CellTransformer {
 	
-	public static Rectangle toRectangle(Cell cell) {
-		Rectangle rectCell = new Rectangle(cell.getX()+200, cell.getY() + 40, 5, 5);
+	public static Rectangle toRectangle(Cell cell, int scaleX, int scaleY) {
+		Rectangle rectCell = new Rectangle(cell.getX()*scaleX + 50, cell.getY()*scaleY + 50, scaleX - 1, scaleY - 1);
 		rectCell.setFill(cell.getColor());
 		return rectCell;
 	}
-
 }
