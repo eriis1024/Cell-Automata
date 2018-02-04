@@ -37,17 +37,18 @@ public class SimulationWaTor extends Simulation	{
 	@Override
 	public void update()	{
 		Grid updatedGrid = grid.copy();
+		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
 			for (int j = 0; j < grid.getHeight(); j++; )	{
-				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, updatedGrid));
+				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, updatedGrid, toMove));
 				updatedGrid.set(i, j, nextState);
 			}
 		}
 
 		// Above code is copy of Simulation superclass update, but passing getNextState updatedGrid also
 
-		moveCells(updatedGrid, );
+		moveCells(updatedGrid, HashMap<Cell, Point2D> toMove);
 	}
 
 	/**
@@ -57,9 +58,8 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 * @param
 	 */
-	private String getNextState(Cell c, Neighborhood n, Grid updatedGrid)	{
+	private String getNextState(Cell c, Neighborhood n, Grid updatedGrid, HashMap<Cell, Point2D> toMove)	{
 		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStateLocs(c, n);
-		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
 
 		c.breedAge++;
 		if (c.getColor() == possStates.get("PREDATOR"))	{
@@ -68,7 +68,9 @@ public class SimulationWaTor extends Simulation	{
 				c.eat(PRED_REGAIN_ENERGY);	// regain energy from eating
 
 				c.loseEnergy();	// predator loses energy every round, no matter what
-				checkAlive(c);
+				if (!checkAlive(c))	{
+					return "FREE";
+				}
 
 				return checkBreed(c, updatedGrid);
 			}
@@ -76,13 +78,17 @@ public class SimulationWaTor extends Simulation	{
 				addToMove(c, nStates, "EMPTY", toMove);	// move predator to EMPTY cell (random if multiple)
 
 				c.loseEnergy();	// predator loses energy every round, no matter what
-				checkAlive(c);
+				if (!checkAlive(c))	{
+					return "FREE";
+				}
 
 				return checkBreed(c, updatedGrid);
 			}
 			else	{	// if nowhere to move (all neighbors are also predators), stay in place
 				c.loseEnergy();	// predator loses energy every round, no matter what
-				checkAlive(c);
+				if (!checkAlive(c))	{
+					return "FREE";
+				}
 
 				return "PREDATOR";
 			}
@@ -171,10 +177,12 @@ public class SimulationWaTor extends Simulation	{
 		}
 	}
 
-	private void checkAlive(Cell c)	{
+	private boolean checkAlive(Cell c)	{
 		if (c.energy == 0)	{
-
+			return false;
 		}
+
+		return true;
 	}
 
 	/**
@@ -184,9 +192,10 @@ public class SimulationWaTor extends Simulation	{
 	private String checkBreed(Cell c, Grid updatedGrid)	{
 		if (c.getColor() == possStates.get("PREY"))	{
 			if (c.breedAge >= PREY_BREED_AGE)	{	// breed
-				c.breedAge = 0;	// insert new prey cell
+				c.breedAge = 0;
 
-				updatedGrid.insert();
+				// insert new prey cell
+				updatedGrid.insert(new CellPrey(possStates.get("PREY"), c.getX(), c.getY()));
 
 				return "PREY";
 			}
@@ -199,6 +208,7 @@ public class SimulationWaTor extends Simulation	{
 				c.breedAge = 0;
 
 				// insert new predator cell
+				updatedGrid.insert(new CellPredator(possStates.get("PREDATOR"), c.getX(), c.getY(), PRED_ENERGY));
 
 				return "PREDATOR";	// put NEW predator cell at this index
 			}

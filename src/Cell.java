@@ -37,6 +37,21 @@ public class Cell extends Polygon	{
 	/**
 	 *
 	 */
+	public void getX()	{
+		return xInd;
+	}
+
+	/**
+	 *
+	 */
+	public void getY()	{
+		return xInd;
+	}
+
+
+	/**
+	 *
+	 */
 	public void setX(int newX)	{
 		xInd = newX;
 	}
@@ -46,14 +61,6 @@ public class Cell extends Polygon	{
 	 */
 	public void setY(int newY)	{
 		yInd = newY;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public boolean equals(Object other)	{
-		return other instanceof Cell && this.getFill() == ((Cell)other).getFill();
 	}
 
 	/**
