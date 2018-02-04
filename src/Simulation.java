@@ -8,10 +8,10 @@ public abstract class Simulation {
 	protected Grid myGrid;
 	protected Neighborhood myNeighborhood;
 	public static final List<String> SUPPORTED_TYPES = Arrays.asList(new String[] {
-	        "conway",
-	        "segregation",
-	        "fire",
-	        "predprey"});
+	        "Conway",
+	        "Segregation",
+	        "Fire",
+	        "PredPrey"});
 	public static final List<String> DATA_FIELDS = Arrays.asList(new String[] {
 	        "head",
 	        "dimensions",
@@ -19,6 +19,7 @@ public abstract class Simulation {
 	
 	public Simulation(Grid g) {
 		myGrid = g;
+		states = new HashMap<String, Color>();
 		myNeighborhood = new BasicNeighborhood();
 	}
 	

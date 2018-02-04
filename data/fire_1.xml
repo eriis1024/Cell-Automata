@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<data simulation="fire">
-    <head>
-        <author>Angela and George Shiflet</author>
-        <title>Spreading of Fire</title>
-    </head>
+<data simulation="Fire">
+    <head author="Angela and George Shiflet" title="Spreading of Fire"></head>
 
-    <dim>
-        <width>80</width>
-        <height>80</height>
-    </dim>
+    <dimensions width="50" height="50"></dimensions>
     
-    <prob>0.5</prob>
+    <params prob="0.5"></params>
     
     <cells>
-        <cell state="BURNING">
-            <x>0</x>
-            <y>0</y>
-        </cell>
-        <cell state="EMPTY">
-            <x>1</x>
-            <y>1</y>
-        </cell>
-        <cell state="TREE">
-            <x>2</x>
-            <y>1</y>
-        </cell>
+        <cell state="BURNING" x="0" y="1"></cell>
+        <cell state="TREE" x="1" y="1"></cell>
+        <cell state="TREE" x="2" y="3"></cell>
+        <cell state="EMPTY" x="10" y="10"></cell>
+        <cell state="TREE" x="11" y="10"></cell>
+        <cell state="TREE" x="9" y="5"></cell>
+        <cell state="TREE" x="2" y="1"></cell>
     </cells>
 </data>

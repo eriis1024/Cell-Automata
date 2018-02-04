@@ -10,6 +10,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +21,7 @@ import java.util.Map;
 
 public class ParseXML {
 	
-	private static final Grid fooGrid = new BasicGrid(1,1,new ArrayList<Cell>(), Color.BLACK);
-	public static final String ERROR_MESSAGE = "XML file does not represent %s";
+	protected static final String TYPE_NOT_SUPPORTED = "Simulation type in XML file not supported";
     // name of root attribute that notes the type of file expecting to parse
     private final String TYPE_ATTRIBUTE;
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing
@@ -30,39 +31,42 @@ public class ParseXML {
 		DOCUMENT_BUILDER = getDocumentBuilder();
 		TYPE_ATTRIBUTE =  type;
 	}
-	
-	public Simulation getSimulation (File dataFile) {
-		Element root = getRootElement(dataFile);
-        if (! isValidFile(root, Simulation.SUPPORTED_TYPES)) throw new XMLException(ERROR_MESSAGE, Simulation.SUPPORTED_TYPES);
-        // read data associated with the fields given by the object
-        Map<String, String> results = new HashMap<>();
-        String type = root.getAttribute("simulation");
 
-        for (String field : Simulation.DATA_FIELDS) {
-        	System.out.println(field);
-        	System.out.println(getTextValue(root, field));
-            results.put(field, getTextValue(root, field));
-        }
+	public Simulation getSimulation (File dataFile) throws XMLException{
+		Element root = getRootElement(dataFile);
+        if (! isValidFile(root, Simulation.SUPPORTED_TYPES)) throw new XMLException(TYPE_NOT_SUPPORTED, Simulation.SUPPORTED_TYPES);
+        String type = root.getAttribute(TYPE_ATTRIBUTE);
         
-        
-        
-        
-        return new ConwaySimulation(getCells(cells));
-	}
-	
-	public ArrayList<Cell> getCells (NodeList cellNodes){
-		for(int i = 0; i<cellNodes.getLength(); i++) { 
-			System.out.println();
+        NodeList paramNodes = root.getElementsByTagName("params");        
+        NodeList cellNodes = root.getElementsByTagName("cells");
+        NodeList dimNodes = root.getElementsByTagName("dimensions");
+        NodeList headNodes = root.getElementsByTagName("head");
+        XMLHelper helperInstance;
+ 	
+        try {
+			Class<?> helperCls = Class.forName(type + "XMLHelper");
+			helperInstance = (XMLHelper)(helperCls).getConstructor().newInstance();        	
+			Method getCells = helperCls.getMethod("getCells", NodeList.class);
+			Method getGrid = helperCls.getMethod("getGrid", NodeList.class, ArrayList.class);
+			Method initSimulation = helperCls.getMethod("initSimulation", NodeList.class, Grid.class);
+
+			ArrayList<Cell> cells = (ArrayList<Cell>)(getCells.invoke(helperInstance, cellNodes));
+			Grid g = (Grid)(getGrid.invoke(helperInstance, dimNodes, cells));
+			Simulation sim = helperInstance.initSimulation(paramNodes, g);
+			return sim;
+		} 
+        catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+        catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return null;
-	}
-	
-	public Grid getGrid (Element root) {
-		
-		
-		NodeList cells = root.getElementsByTagName("cells");
-		
-		return new Grid(50,50, getCells(cells));
+        
+        // TODO fix this later
+        return null;
+        // throw xml error
 	}
 	
     // Get root element of an XML file
@@ -109,5 +113,4 @@ public class ParseXML {
             throw new XMLException(e);
         }
     }
-
 }

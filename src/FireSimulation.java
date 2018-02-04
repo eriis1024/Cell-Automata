@@ -9,6 +9,7 @@ public class FireSimulation extends Simulation{
 	private static final String EMPTY = "EMPTY";	
 	private static final String TREE = "TREE";	
 	private double burningProb;
+	public static final Color DEFAULT_COLOR = Color.GRAY;
 	
 	public FireSimulation(Grid g, double prob) {
 		super(g);
