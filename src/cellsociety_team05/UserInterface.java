@@ -1,4 +1,3 @@
-
 package cellsociety_team05;
 //This class deals with the user interface components of the project from mouse/keyboard inputs. 
 //Anything the user interacts with directly is handled here.
@@ -7,8 +6,6 @@ package cellsociety_team05;
 //handles toolbar, file selection
 //handles mouse input
 //handles keyboard input
-
-import java.io.File;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,7 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -39,7 +35,7 @@ public class UserInterface extends Runner {
 	public static final Paint BACKGROUND_COLOR = Color.LIGHTGRAY;
 	protected Scene myScene;
 	protected Stage myStage;
-	protected static Group root = new Group(); //change from static by adding labels directly to dropdown menu
+	protected Group root = new Group(); 
 	protected Timeline animation;
 	protected KeyFrame myFrame;
 
@@ -67,10 +63,12 @@ public class UserInterface extends Runner {
 		simButton.getStyleClass().add("stepButton");
 		root.getChildren().add(simButton);
 
-		FileChooser XMLchooser = new FileChooser();
-		XMLchooser.setTitle("Select Simulation");
-		FileChooser.ExtensionFilter XMLfilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
-		XMLchooser.getExtensionFilters().add(XMLfilter);
+		//		FileChooser XMLchooser = new FileChooser();
+		//		XMLchooser.setTitle("Select Simulation");
+		//		FileChooser.ExtensionFilter XMLfilter = new FileChooser.ExtensionFilter("XML Files", "*.xml");
+		//		XMLchooser.getExtensionFilters().add(XMLfilter);
+		//add file filtering so user can only choose simulation file
+		//erikriis/eclipse-workspace/cellsociety_team05/data
 
 		Label title = Factory.setLabel(20, 10, "CELL SOCIETY: Team 5");
 		title.getStyleClass().add("titleLabel");
@@ -96,7 +94,7 @@ public class UserInterface extends Runner {
 
 		Alert speedAlert = Factory.setAlert("Wrong User Input", "Please enter a positive integer value");
 
-		Alert fileAlert = Factory.setAlert("Simulation File Chooser", "Incompatible file, please choose a simulation.xml file");
+		//Alert fileAlert = Factory.setAlert("Simulation File Chooser", "Incompatible file, please choose a simulation.xml file");
 
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -121,25 +119,24 @@ public class UserInterface extends Runner {
 			}
 		});
 
-		simButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				File file = XMLchooser.showOpenDialog(myStage); //error
-				if (file != null && file.getName() == "ConwaySim.xml") {
-					root.getChildren().add(conwayLabel);
-					//ParseXML(file);
-				} else if (file != null && file.getName() == "PredPreySim.xml") {
-					root.getChildren().add(predpreyLabel);
-					//ParseXML(file);
-				} else {
-					fileAlert.show();
-				}
-			}
-		});
+//		simButton.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent event) {
+//				File file = XMLchooser.showOpenDialog(myStage); //error
+//				if (file != null && file.getName() == "ConwaySim.xml") {
+//					root.getChildren().add(conwayLabel);
+//					//ParseXML(file);
+//				} else if (file != null && file.getName() == "PredPreySim.xml") {
+//					root.getChildren().add(predpreyLabel);
+//					//ParseXML(file);
+//				} else {
+//					fileAlert.show();
+//				}
+//			}
+//		});
 
 		speedTextField.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ENTER) {
-				//need alert if wrong type of input
 				try {
 					int speed = Integer.parseInt(speedTextField.getText());
 					if (speed <= 0) {
