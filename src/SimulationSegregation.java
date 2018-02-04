@@ -14,8 +14,8 @@ public class SimulationSegregation extends Simulation	{
 
 	ArrayList<Cell> cellstoMove;
 
-	public SimulationSegregation(int satisfied)	{
-		super();
+	public SimulationSegregation(Grid g, double satisfied)	{
+		super(g);
 		possStates = new HashMap<String, Color>()	{{
 			put("EMPTY", Color.WHITE);
 			put("X", Color.BLUE);

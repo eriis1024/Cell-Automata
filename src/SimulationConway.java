@@ -9,8 +9,8 @@ import javafx.scene.paint.Color;
 public class SimulationConway extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.BLACK;
 
-	public SimulationConway()	{
-		super();
+	public SimulationConway(Grid g)	{
+		super(g);
 		possStates = new HashMap<String, Color>()	{{
 			put("ALIVE", Color.WHITE);
 			put("DEAD", Color.BLACK);

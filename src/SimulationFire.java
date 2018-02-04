@@ -9,14 +9,17 @@ import javafx.scene.paint.Color;
 public class SimulationFire extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.WHITE;
 
-	public SimulationFire()	{
-		super();
+	public double probCatch;
+
+	public SimulationFire(Grid g, double prob)	{
+		super(g);
 		possStates = new HashMap<String, Color>()	{{
 			put("EMPTY", Color.WHITE);
 			put("TREE", Color.GREEN);
 			put("BURNING", Color.ORANGE);
 		}};
 		neighborhood = new NonDiagNeighborhood();
+		probCatch = prob;
 	}
 
 	/**
@@ -31,8 +34,6 @@ public class SimulationFire extends Simulation	{
 
 		// empty cells do nothing
 		if (c.getColor() == possStates.get("TREE"))	{
-			double probCatch = 0.15;
-
 			if (nStates.get("BURNING") >= 1)	{
 				if (Math.random() <= probCatch)	{
 					return "BURNING";

@@ -17,8 +17,8 @@ public class SimulationWaTor extends Simulation	{
 	public int PRED_ENERGY;
 	public int PRED_REGAIN_ENERGY;
 
-	public SimulationWaTor(int start_prey, int start_pred, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
-		super();
+	public SimulationWaTor(Grid g, int start_prey, int start_pred, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
+		super(g);
 		possStates = new HashMap<String, Color>()	{{
 			put("FREE", Color.BLUE);
 			put("PREY", Color.YELLOW);
@@ -177,7 +177,7 @@ public class SimulationWaTor extends Simulation	{
 			if (c.breedAge >= PREY_BREED_AGE)	{	// breed
 				c.breedAge = 0;	// insert new prey cell
 
-				// insert new prey cell
+				updatedGrid.insert();
 
 				return "PREY";
 			}

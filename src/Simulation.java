@@ -59,4 +59,11 @@ public abstract class Simulation	{
 	 * Called by getNextState, helper method to list the number of cells in each state in neighborhood
 	 */
 	private abstract HashMap<String, Integer> getNeighborStates(Neighborhood n);
+
+	/**
+	 *
+	 */
+	public HashMap<String, Color> getStates()	{
+		return possStates;
+	}
 }
