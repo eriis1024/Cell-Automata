@@ -39,6 +39,18 @@ public abstract class Simulation	{
 	}
 
 	/**
+	 * Helper method for getnextState, gets state of a Cell as a String from Cell's color
+	 * @param
+	 */
+	private String getState(Cell c)	{
+		for (Map.Entry state:possStates.entrySet())	{
+			if (state.getValue() == c.getColor())	{
+				return state.getKey();
+			}
+		}
+	}
+
+	/**
 	 *
 	 */
 	private abstract String getNextState(Cell c, Neighborhood n);
