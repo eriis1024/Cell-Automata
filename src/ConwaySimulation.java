@@ -6,10 +6,11 @@ import javafx.scene.paint.Color;
 public class ConwaySimulation extends Simulation{
 	
 	private static final String DEAD = "DEAD";
-	private static final String ALIVE = "ALIVE";	
+	private static final String ALIVE = "ALIVE";
+	public static final Color DEFAULT_COLOR = Color.BLACK;
 	
 	public ConwaySimulation(Grid g) {
-		super(g);
+		super(g);		
 		initStates();
 	}
 	
