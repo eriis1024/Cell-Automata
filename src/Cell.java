@@ -7,9 +7,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Cell extends Polygon	{
-	private String state;
-	private int xInd;
-	private int yInd;
+	protected String state;
+	protected int xInd;
+	protected int yInd;
 
 	/**
 	 *

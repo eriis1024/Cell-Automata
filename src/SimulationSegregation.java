@@ -12,8 +12,6 @@ public class SimulationSegregation extends Simulation	{
 
 	public double SATISFIED;	// get from XML
 
-	ArrayList<Cell> cellstoMove;
-
 	public SimulationSegregation(Grid g, double satisfied)	{
 		super(g);
 		possStates = new HashMap<String, Color>()	{{
@@ -30,9 +28,17 @@ public class SimulationSegregation extends Simulation	{
 	 *
 	 */
 	@Override
-	public void update()	{
-		cellstoMove = new ArrayList<Cell>();
-		super.update();
+	public void update()	{		
+		Grid updatedGrid = grid.copy();
+		ArrayList<Cell> cellstoMove = new ArrayList<Cell>();
+
+		for (int i = 0; i < grid.getWidth(); i++)	{
+			for (int j = 0; j < grid.getHeight(); j++; )	{
+				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, cellstoMove));
+				updatedGrid.set(i, j, nextState);
+			}
+		}
+
 		moveCells(updatedGrid, cellstoMove);
 	}
 
@@ -41,9 +47,9 @@ public class SimulationSegregation extends Simulation	{
 	 * This is where the conditions of simulation are held
 	 * @param
 	 * @param
+	 * @param
 	 */
-	@Override
-	private String getNextState(Cell c, Neighborhood n)	{
+	private String getNextState(Cell c, Neighborhood n, ArrayList<Cell> cellstoMove)	{
 		HashMap<String, Integer> nStates = getNeighborStates(n);
 		int numNeighbors = nStates.get("X") + nStates.get("O");
 
@@ -103,7 +109,7 @@ public class SimulationSegregation extends Simulation	{
 	 * Move dissatisfied Cells to random empty spot on next, updated board
 	 * @param
 	 */
-	private void moveCells(ArrayList<Cell> toMove)	{
+	private void moveCells(Grid updatedGrid, ArrayList<Cell> toMove)	{
 		ArrayList emptyCells = getEmptyCells();
 
 		// move cell in UPDATEGRID
@@ -111,6 +117,10 @@ public class SimulationSegregation extends Simulation	{
 			Cell randomEmpty = getEmptyCells.get(Math.random() * emptyCells.size());	// find a place to move unsatisfied cell
 			randomEmpty.colorCell(moveMe.getColor());	// "put" cell in empty spot
 			moveMe.colorCell(possStates.get("EMPTY"));	// make spot cell left empty
+
+			updatedGrid.insert(randomEmpty);
+			updatedGrid.insert(moveMe);
+
 			emptyCells.remove(randomEmpty);	// remove now taken spot from list of empty spots
 		}
 

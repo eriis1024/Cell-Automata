@@ -4,6 +4,9 @@
  * Subclasses of this abstract class will control updating of cells in each instance of Grid with traits/values specific to simulation type (ConwaySim, FireSim, etc.)
  */
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
@@ -42,10 +45,10 @@ public abstract class Simulation	{
 	 * Helper method for getnextState, gets state of a Cell as a String from Cell's color
 	 * @param
 	 */
-	private String getState(Cell c)	{
+	protected String getState(Cell c)	{
 		for (Map.Entry state:possStates.entrySet())	{
 			if (state.getValue() == c.getColor())	{
-				return state.getKey();
+				return state.getKey().toString();
 			}
 		}
 	}
@@ -53,12 +56,12 @@ public abstract class Simulation	{
 	/**
 	 *
 	 */
-	private abstract String getNextState(Cell c, Neighborhood n);
+	protected abstract String getNextState(Cell c, Neighborhood n);
 
 	/**
 	 * Called by getNextState, helper method to list the number of cells in each state in neighborhood
 	 */
-	private abstract HashMap<String, Integer> getNeighborStates(Neighborhood n);
+	protected abstract HashMap<String, Integer> getNeighborStates(Neighborhood n);
 
 	/**
 	 *
