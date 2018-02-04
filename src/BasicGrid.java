@@ -29,7 +29,7 @@ public class BasicGrid implements Grid {
 	}
 	
 	public void set(int x, int y, Color c) {
-		get(x,y).setColor(c);
+		get(x,y).colorCell(c);
 	}
 	
 	public void insert(Cell c) {

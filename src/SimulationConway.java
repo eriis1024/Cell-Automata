@@ -25,14 +25,14 @@ public class SimulationConway extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private String getNextState(Cell c, Neighborhood n)	{
-		HashMap<String, Integer> nStates = getNeighborStates(g, c, n);
+	protected String getNextState(Cell c, Neighborhood n)	{
+		HashMap<String, Integer> nStates = getNeighborStates(c, n);
 
 		if (c.getColor() == possStates.get("ALIVE"))	{
 			if (nStates.get("ALIVE") < 2 || nStates.get("ALIVE") > 3)	{
 				return "DEAD";
 			}
-			else if (nStates.get("ALIVE") == 2 | nStates.get"ALIVE") == 3)	{
+			else if (nStates.get("ALIVE") == 2 | nStates.get("ALIVE") == 3)	{
 				return "ALIVE";
 			}
 		}
@@ -54,7 +54,7 @@ public class SimulationConway extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
+	protected HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
 		int neighborsAlive = 0;
 		int neighborsDead = 0;

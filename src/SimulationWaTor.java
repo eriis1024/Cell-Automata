@@ -11,10 +11,10 @@ import javafx.scene.paint.Color;
 public class SimulationWaTor extends Simulation	{
 	public static final Color DEFAULT_COLOR = Color.BLUE;
 
-	public int PREY_BREED_AGE;
-	public int PRED_BREED_AGE;
-	public int PRED_ENERGY;
-	public int PRED_REGAIN_ENERGY;
+	private int PREY_BREED_AGE;
+	private int PRED_BREED_AGE;
+	private int PRED_ENERGY;
+	private int PRED_REGAIN_ENERGY;
 
 	public SimulationWaTor(Grid g, int prey_breed_age, int pred_breed_age, int pred_energy, int pred_regain_energy)	{
 		super(g);
@@ -40,7 +40,7 @@ public class SimulationWaTor extends Simulation	{
 		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
-			for (int j = 0; j < grid.getHeight(); j++; )	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
 				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, updatedGrid, toMove));
 				updatedGrid.set(i, j, nextState);
 			}
@@ -52,8 +52,16 @@ public class SimulationWaTor extends Simulation	{
 	}
 
 	/**
+	 *
+	 */
+	protected String getNextState(Cell c, Neighborhood n)	{
+		return null;
+	}
+
+	/**
 	 * gets what state Ceel c should be after update
 	 * This is where the conditions of simulation are held
+	 * @param
 	 * @param
 	 * @param
 	 * @param
@@ -61,8 +69,8 @@ public class SimulationWaTor extends Simulation	{
 	private String getNextState(Cell c, Neighborhood n, Grid updatedGrid, HashMap<Cell, Point2D> toMove)	{
 		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStateLocs(c, n);
 
-		c.breedAge++;
-		if (c.getColor() == possStates.get("PREDATOR"))	{
+		if (c instanceof CellPredator)	{
+			c.breedAge++;
 			if (nStates.containsKey("PREY"))	{	// if any prey to eat in neighborhood
 				addToMove(c, nStates, "PREY", toMove);	// move to prey location (random if multiple)
 				c.eat(PRED_REGAIN_ENERGY);	// regain energy from eating
@@ -90,7 +98,8 @@ public class SimulationWaTor extends Simulation	{
 				return "PREDATOR";
 			}
 		}
-		else if (c.getColor() == possStates.get("PREY"))	{
+		else if (c instanceof CellPrey)	{
+			c.breedAge++;
 			if (nStates.containsKey("EMPTY"))	{	// if EMPTY spots
 				addToMove(c, nStates, "EMPTY", toMove);
 				checkBreed(c, updatedGrid);
@@ -110,7 +119,7 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
+	protected HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 	}
 
 	private HashMap<String, ArrayList<Point2D>> getNeighborStateLocs(Cell c, Neighborhood n)	{
@@ -159,7 +168,7 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 * @param
 	 */
-	public void addToMove(Cell c, HashMap<String, ArrayList<Point2D>> nStates, String state, HashMap<Cell, Point2D> toMove)	{
+	private void addToMove(Cell c, HashMap<String, ArrayList<Point2D>> nStates, String state, HashMap<Cell, Point2D> toMove)	{
 		int moveTo = (int) Math.random() * nStates.get(state).size();
 		toMove.put(c, nStates.get(state).get(moveTo));
 	}
@@ -218,4 +227,5 @@ public class SimulationWaTor extends Simulation	{
 				return "EMPTY";
 			}
 		}
+	}
 }

@@ -21,7 +21,7 @@ public abstract class Simulation	{
         "WaTor"});
 
 	/**
-	 * @param Grid
+	 * @param
 	 */
 	public Simulation(Grid g)	{
 		grid = g;
@@ -34,7 +34,7 @@ public abstract class Simulation	{
 		Grid updatedGrid = grid.copy();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
-			for (int j = 0; j < grid.getHeight(); j++; )	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
 				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood));
 				updatedGrid.set(i, j, nextState);
 			}
@@ -42,7 +42,7 @@ public abstract class Simulation	{
 	}
 
 	/**
-	 * Helper method for getnextState, gets state of a Cell as a String from Cell's color
+	 * Helper method for getNextState, gets state of a Cell as a String from Cell's color
 	 * @param
 	 */
 	protected String getState(Cell c)	{
@@ -51,6 +51,8 @@ public abstract class Simulation	{
 				return state.getKey().toString();
 			}
 		}
+
+		return null;
 	}
 
 	/**

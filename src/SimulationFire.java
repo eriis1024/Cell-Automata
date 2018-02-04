@@ -29,7 +29,7 @@ public class SimulationFire extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private String getNextState(Cell c, Neighborhood n)	{
+	protected String getNextState(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = getNeighborStates(c, n);
 
 		// empty cells do nothing
@@ -55,7 +55,7 @@ public class SimulationFire extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
+	protected HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
 		int neighborsBurning = 0;
 

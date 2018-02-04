@@ -33,7 +33,7 @@ public class SimulationSegregation extends Simulation	{
 		ArrayList<Cell> cellstoMove = new ArrayList<Cell>();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
-			for (int j = 0; j < grid.getHeight(); j++; )	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
 				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, cellstoMove));
 				updatedGrid.set(i, j, nextState);
 			}
@@ -42,7 +42,8 @@ public class SimulationSegregation extends Simulation	{
 		moveCells(updatedGrid, cellstoMove);
 	}
 
-	private String getNextState(Cell c, Neighborhood n)	{
+	protected String getNextState(Cell c, Neighborhood n)	{
+		return null;
 	}
 
 	/**
@@ -52,8 +53,8 @@ public class SimulationSegregation extends Simulation	{
 	 * @param
 	 * @param
 	 */
-	private String getNextState(Cell c, Neighborhood n, ArrayList<Cell> cellstoMove)	{
-		HashMap<String, Integer> nStates = getNeighborStates(n);
+	protected String getNextState(Cell c, Neighborhood n, ArrayList<Cell> cellstoMove)	{
+		HashMap<String, Integer> nStates = getNeighborStates(c, n);
 		int numNeighbors = nStates.get("X") + nStates.get("O");
 
 		if ((double) nStates.get(getState(c)) / numNeighbors < SATISFIED)	{
@@ -72,7 +73,7 @@ public class SimulationSegregation extends Simulation	{
 	 * @param
 	 */
 	@Override
-	private HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
+	protected HashMap<String, Integer> getNeighborStates(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = new HashMap<String, Integer>();
 		int neighborsX = 0;
 		int neighborsO = 0;
