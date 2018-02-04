@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<data simulation="Segregation">
+    <head author="Thomas Schelling" title="Schelling's Model of Segregation"></head>
+
+    <dimensions width="50" height="50"></dimensions>
+    
+    <params similarity="0.5"></params>
+    
+    <cells>
+        <cell state="EMPTY" x="0" y="1"></cell>
+        <cell state="X" x="10" y="0"></cell>
+        <cell state="O" x="13" y="9"></cell>
+        <cell state="X" x="14" y="4"></cell>
+        <cell state="X" x="16" y="3"></cell>
+        <cell state="X" x="25" y="23"></cell>
+        <cell state="O" x="43" y="12"></cell>
+        <cell state="O" x="10" y="5"></cell>
+    </cells>
+</data>
