@@ -99,6 +99,9 @@ public class SimulationWaTor extends Simulation	{
 				return "PREY";
 			}
 		}
+		else	{	// free cell, assume stay free and later move method will cover if necessary
+			return "FREE";
+		}
 	}
 
 	/**
@@ -177,6 +180,7 @@ public class SimulationWaTor extends Simulation	{
 	private boolean checkAlive(Cell c)	{
 		c.loseEnergy();	// predator loses energy every round, no matter what
 		if (c.energy == 0)	{
+			c = new Cell(possStates.get("FREE"), c.getX(), c.getY());
 			return false;
 		}
 
