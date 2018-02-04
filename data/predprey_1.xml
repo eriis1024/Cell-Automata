@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<data simulation="PredPrey">
+    <head author="Angela and George Shiflet" title="Spreading of Fire"></head>
+
+    <dimensions width="50" height="50"></dimensions>
+    
+    <params prob="0.5"></params>
+    
+    <cells>
+        <cell state="PREY" x="0" y="1"></cell>
+        <cell state="PREDATOR" x="1" y="1"></cell>
+        <cell state="PREY" x="2" y="3"></cell>
+        <cell state="PREDATOR" x="10" y="10"></cell>
+        <cell state="PREY" x="11" y="10"></cell>
+        <cell state="PREY" x="9" y="5"></cell>
+        <cell state="FREE" x="2" y="1"></cell>
+    </cells>
+</data>
