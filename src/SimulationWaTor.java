@@ -70,10 +70,10 @@ public class SimulationWaTor extends Simulation	{
 		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStateLocs(c, n);
 
 		if (c instanceof CellPredator)	{
-			c.breedAge++;
+			((CellPredator)c).breedAge++;
 			if (nStates.containsKey("PREY"))	{	// if any prey to eat in neighborhood
 				addToMove(c, nStates, "PREY", toMove);	// move to prey location (random if multiple)
-				c.eat(PRED_REGAIN_ENERGY);	// regain energy from eating
+				((CellPredator)c).eat(PRED_REGAIN_ENERGY);	// regain energy from eating
 
 				if (!checkAlive(c))	{	// if dead, end
 					return "FREE";
@@ -99,7 +99,7 @@ public class SimulationWaTor extends Simulation	{
 			}
 		}
 		else if (c instanceof CellPrey)	{
-			c.breedAge++;
+			((CellPrey)c).breedAge++;
 			if (nStates.containsKey("EMPTY"))	{	// if EMPTY spots
 				addToMove(c, nStates, "EMPTY", toMove);
 				checkBreed(c, updatedGrid);
@@ -187,8 +187,8 @@ public class SimulationWaTor extends Simulation	{
 	}
 
 	private boolean checkAlive(Cell c)	{
-		c.loseEnergy();	// predator loses energy every round, no matter what
-		if (c.energy == 0)	{
+		((CellPredator)c).loseEnergy();	// predator loses energy every round, no matter what
+		if (((CellPredator)c).energy == 0)	{
 			c = new Cell(possStates.get("FREE"), c.getX(), c.getY());
 			return false;
 		}
@@ -202,8 +202,8 @@ public class SimulationWaTor extends Simulation	{
 	 */
 	private String checkBreed(Cell c, Grid updatedGrid)	{
 		if (c.getColor() == possStates.get("PREY"))	{
-			if (c.breedAge >= PREY_BREED_AGE)	{	// breed
-				c.breedAge = 0;
+			if (((CellPrey)c).breedAge >= PREY_BREED_AGE)	{	// breed
+				((CellPrey)c).breedAge = 0;
 
 				// insert new prey cell
 				updatedGrid.insert(new CellPrey(possStates.get("PREY"), c.getX(), c.getY()));
@@ -215,8 +215,8 @@ public class SimulationWaTor extends Simulation	{
 			}
 		}
 		else if (c.getColor() == possStates.get("PREDATOR")) {
-			if (c.breedAge >= PRED_BREED_AGE)	{	// breed
-				c.breedAge = 0;
+			if (((CellPredator)c).breedAge >= PRED_BREED_AGE)	{	// breed
+				((CellPredator)c).breedAge = 0;
 
 				// insert new predator cell
 				updatedGrid.insert(new CellPredator(possStates.get("PREDATOR"), c.getX(), c.getY(), PRED_ENERGY));
