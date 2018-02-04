@@ -12,10 +12,6 @@ public abstract class Simulation {
 	        "Segregation",
 	        "Fire",
 	        "PredPrey"});
-	public static final List<String> DATA_FIELDS = Arrays.asList(new String[] {
-	        "head",
-	        "dimensions",
-	        "cells"});
 	
 	public Simulation(Grid g) {
 		myGrid = g;

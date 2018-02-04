@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Jeremy Chen
+ *
+ */
 public class BasicGrid implements Grid {
 	
 	private int myWidth;
