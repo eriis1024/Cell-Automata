@@ -12,8 +12,8 @@ public class SimulationConway extends Simulation	{
 	public SimulationConway()	{
 		super();
 		possStates = new HashMap<String, Color>()	{{
-			put("alive", Color.WHITE);
-			put("dead", Color.BLACK);
+			put("ALIVE", Color.WHITE);
+			put("DEAD", Color.BLACK);
 		}};
 		neighborhood = new BasicNeighborhood();
 	}
@@ -26,19 +26,24 @@ public class SimulationConway extends Simulation	{
 	private String getNextState(Cell c, Neighborhood n)	{
 		HashMap<String, Integer> nStates = getNeighborStates(g, c, n);
 
-		if (c.getColor() == possStates.get("alive"))	{
-			if (nStates.get("alive") < 2 || nStates.get("alive") > 3)	{
-				return "dead";
+		if (c.getColor() == possStates.get("ALIVE"))	{
+			if (nStates.get("ALIVE") < 2 || nStates.get("ALIVE") > 3)	{
+				return "DEAD";
 			}
-			else if (nStates.get("alive") == 2 | nStates.get"alive") == 3)	{
-				return "alive";
-			}
-		}
-		else if (c.getColor() == possStates.get("dead"))	{
-			if (nStates.get("alive") == 3)	{
-				return "alive";
+			else if (nStates.get("ALIVE") == 2 | nStates.get"ALIVE") == 3)	{
+				return "ALIVE";
 			}
 		}
+		else if (c.getColor() == possStates.get("DEAD"))	{
+			if (nStates.get("ALIVE") == 3)	{
+				return "ALIVE";
+			}
+			else	{
+				return "DEAD";
+			}
+		}
+
+		return "DEAD";	// should never get to this line, all cases handled in if tree
 	}
 
 	/**
@@ -51,16 +56,16 @@ public class SimulationConway extends Simulation	{
 		int neighborsDead = 0;
 
 		for (Cell neighbor:n.getNeighbors(grid, c))	{
-			if (neighbor.getColor() == possStates.get("alive"))	{
+			if (neighbor.getColor() == possStates.get("ALIVE"))	{
 				neighborsAlive++;
 			}
-			else if (neighbor.getColor() == possStates.get("dead"))	{
+			else if (neighbor.getColor() == possStates.get("DEAD"))	{
 				neighborsDead++;
 			}
 		}
 
-		nStates.put("alive", neighborsAlive);
-		nStates.put("dead", neighborsDead);
+		nStates.put("ALIVE", neighborsAlive);
+		nStates.put("DEAD", neighborsDead);
 
 		return nStates;
 	}

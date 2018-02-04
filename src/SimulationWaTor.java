@@ -17,9 +17,9 @@ public class SimulationWaTor extends Simulation	{
 	public SimulationWaTor()	{
 		super();
 		possStates = new HashMap<String, Color>()	{{
-			put("free", Color.BLUE);
-			put("prey", Color.YELLOW);
-			put("predator", Color.BLACK);
+			put("FREE", Color.BLUE);
+			put("PREY", Color.YELLOW);
+			put("PREDATOR", Color.BLACK);
 		}};
 		neighborhood = new NonDiagNeighborhood();
 	}

@@ -11,16 +11,55 @@ public class Cell extends Polygon	{
 	private int xInd;
 	private int yInd;
 
+	/**
+	 *
+	 */
 	public Cell(Color color, int x, int y)	{
 		colorCell(color);
 		xInd = x;
 		yInd = y;
 	}
 
+	/**
+	 *
+	 */
 	public void colorCell(Color color)	{
 		this.setFill(color);
 	}
 
-	hungry
-	breeding time
+	/**
+	 *
+	 */
+	public Color getColor()	{
+		return (Color)(this.getFill());
+	}
+
+	/**
+	 *
+	 */
+	public void setX(int newX)	{
+		xInd = newX;
+	}
+
+	/**
+	 *
+	 */
+	public void setY(int newY)	{
+		yInd = newY;
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public boolean equals(Object other)	{
+		return other instanceof Cell && this.getFill() == ((Cell)other).getFill();
+	}
+
+	/**
+	 *
+	 */
+	public Cell copy()	{
+		return new Cell((Color)getFill(), xInd, yInd);
+	}
 }

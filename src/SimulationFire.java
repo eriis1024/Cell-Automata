@@ -12,9 +12,9 @@ public class SimulationFire extends Simulation	{
 	public SimulationFire()	{
 		super();
 		possStates = new HashMap<String, Color>()	{{
-			put("empty", Color.WHITE);
-			put("tree", Color.GREEN);
-			put("burning", Color.ORANGE);
+			put("EMPTY", Color.WHITE);
+			put("TREE", Color.GREEN);
+			put("BURNING", Color.ORANGE);
 		}};
 		neighborhood = new NonDiagNeighborhood();
 	}
@@ -28,20 +28,22 @@ public class SimulationFire extends Simulation	{
 		HashMap<String, Integer> nStates = getNeighborStates(n);
 
 		// empty cells do nothing
-		if (c.getColor() == possStates.get("tree"))	{
+		if (c.getColor() == possStates.get("TREE"))	{
 			double probCatch = 0.15;
 
-			if (nStates.get("burning") >= 1)	{
+			if (nStates.get("BURNING") >= 1)	{
 				if (Math.random() <= probCatch)	{
-					return "burning";
+					return "BURNING";
 				}
 			}
 
-			return "tree";
+			return "TREE";
 		}		
-		else if (c.getColor() == possStates.get("burning"))	{
-			return "empty";
+		else if (c.getColor() == possStates.get("BURNING"))	{
+			return "EMPTY";
 		}
+
+		return "EMPTY";	// all cases of changing states handled in if tree, this is fall-through
 	}
 
 	/**
@@ -53,12 +55,12 @@ public class SimulationFire extends Simulation	{
 		int neighborsBurning = 0;
 
 		for (Cell neighbor:n.getNeighbors(grid, c))	{
-			if (neighbor.getColor() == possStates.get("burning"))	{
+			if (neighbor.getColor() == possStates.get("BURNING"))	{
 				neighborsBurning++;
 			}
 		}
 
-		nStates.put("burning", neighborsBurning);
+		nStates.put("BURNING", neighborsBurning);
 
 		return nStates;
 	}
