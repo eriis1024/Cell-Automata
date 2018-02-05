@@ -71,4 +71,11 @@ public abstract class Simulation	{
 	public HashMap<String, Color> getStates()	{
 		return possStates;
 	}
+
+	/**
+	 *
+	 */
+	public Grd getGrid()	{
+		return grid;
+	}
 }
