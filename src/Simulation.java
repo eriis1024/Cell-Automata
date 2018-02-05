@@ -25,8 +25,6 @@ public abstract class Simulation	{
 	 */
 	public Simulation(Grid g)	{
 		grid = g;
-		possStates = new HashMap<String, Color>();
-		neighborhood = new BasicNeighborhood();
 	}
 
 	/**
@@ -34,13 +32,17 @@ public abstract class Simulation	{
 	 */
 	public Grid update()	{
 		Grid updatedGrid = grid.copy();
+
 		for (int i = 0; i < grid.getWidth(); i++)	{
 			for (int j = 0; j < grid.getHeight(); j++)	{
 				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood));
 				updatedGrid.set(i, j, nextState);
 			}
 		}
-		return updatedGrid;
+
+		grid = updatedGrid;
+
+		return grid;
 	}
 
 	/**
@@ -48,11 +50,12 @@ public abstract class Simulation	{
 	 * @param
 	 */
 	protected String getState(Cell c)	{
-		for (Map.Entry state:possStates.entrySet())	{
-			if (state.getValue() == c.getColor())	{
-				return state.getKey().toString();
+		for (String state:possStates.keySet() )	{
+			if (possStates.get(state) == c.getColor())	{
+				return state;
 			}
 		}
+
 		return null;
 	}
 
@@ -72,9 +75,11 @@ public abstract class Simulation	{
 	public HashMap<String, Color> getStates()	{
 		return possStates;
 	}
-	
+
+	/**
+	 *
+	 */
 	public Grid getGrid()	{
 		return grid;
 	}
-
-}
+} 

@@ -34,8 +34,8 @@ public class UserInterface extends Runner {
 	public static final int BUTTON_SIZE_Y = 70;
 	public static final int SIZE_X = 500;
 	public static final int SIZE_Y = 600;
-	public static final int FRAMES_PER_SECOND = 1;
-	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+	protected int FRAMES_PER_SECOND = 5;
+	protected int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	protected double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 	public static final Paint BACKGROUND_COLOR = Color.LIGHTGRAY;
 	protected Scene myScene;
@@ -48,7 +48,7 @@ public class UserInterface extends Runner {
 	protected Stage myStage;
 
 	public void setupScene() {
-		
+
 		myFrame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 				e -> step(SECOND_DELAY));
 		animation = new Timeline();
@@ -77,6 +77,7 @@ public class UserInterface extends Runner {
 		root.getChildren().add(title);
 
 		TextField speedTextField = Factory.setTextField(350, 560, 125, 30);
+		speedTextField.setPromptText("frames/second");
 		root.getChildren().add(speedTextField);
 
 		Label speedLabel = Factory.setLabel(302, 565, "Speed:");
@@ -106,6 +107,9 @@ public class UserInterface extends Runner {
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				animation.getKeyFrames().clear();
+				animation.setCycleCount(50);
+				animation.getKeyFrames().add(myFrame);
 				animation.play();
 			}
 		});
@@ -126,6 +130,22 @@ public class UserInterface extends Runner {
 			}
 		});
 
+		speedTextField.setOnKeyPressed(event -> {
+			if (event.getCode() == KeyCode.ENTER) {
+				try {
+					int speed = Integer.parseInt(speedTextField.getText());
+					if (speed <= 0) {
+						speedAlert.show();
+					}
+					FRAMES_PER_SECOND = speed;
+					System.out.println(speed);
+				} catch (NumberFormatException e) {
+					System.out.println("Wrong number");
+					speedAlert.show();
+				}
+			}
+		});
+
 		simButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) { //should be in viewer
@@ -133,7 +153,7 @@ public class UserInterface extends Runner {
 				if (dataFile != null) {
 					mySim = new ParseXML("simulation").getSimulation(dataFile); //create method for this
 					System.out.println(mySim);
-					root.getChildren().add(conwayLabel);
+					//root.getChildren().add(conwayLabel);
 					myGrid = mySim.getGrid();
 					int scalingFactorX = 400/myGrid.getWidth();
 					int scalingFactorY = 400/myGrid.getHeight();
@@ -150,37 +170,35 @@ public class UserInterface extends Runner {
 				}
 			}
 		});
-
-		speedTextField.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.ENTER) {
-				try {
-					int speed = Integer.parseInt(speedTextField.getText());
-					if (speed <= 0) {
-						speedAlert.show();
-					}
-					SECOND_DELAY = speed;
-					System.out.println(speed);
-				} catch (NumberFormatException e) {
-					System.out.println("Wrong number");
-					speedAlert.show();
-				}
-			}
-		});
 	}
 
 	protected void step (double elapsedTime) {
-//		int scalingFactorX = 400/myGrid.getWidth();
-//		int scalingFactorY = 400/myGrid.getHeight();
-//		for(int i = 0; i < gridCells.size(); i++) {
-//			root.getChildren().remove(gridCells.get(i));
-//		}
-//		Grid newGrid = mySim.update();
-//		for (int i = 0; i < newGrid.getWidth(); i++) {
-//			for (int j=0; j<newGrid.getHeight(); j++) {
-//				Cell cell = newGrid.get(i, j);
-//				Rectangle add1 = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
-//				root.getChildren().add(add1);
-//			}
-//		}
+		int scalingFactorX = 400/myGrid.getWidth();
+		int scalingFactorY = 400/myGrid.getHeight();
+		for(int i = 0; i < gridCells.size(); i++) {
+			root.getChildren().remove(gridCells.get(i));
+		}
+		Grid newGrid = mySim.update();
+		for (int i = 0; i < newGrid.getWidth(); i++) {
+			for (int j=0; j<newGrid.getHeight(); j++) {
+				Cell cell = newGrid.get(i, j);
+				Rectangle add1 = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
+				root.getChildren().add(add1);
+			}
+		}
 	}
+
+		protected void addSim(Simulation sim) {
+			int scalingFactorX = 400/myGrid.getWidth();
+			int scalingFactorY = 400/myGrid.getHeight();
+			for (int i = 0; i < myGrid.getWidth(); i++) {
+				for (int j = 0; j < myGrid.getHeight(); j++) {
+					Cell cell = myGrid.get(i, j);
+					Rectangle add = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
+					gridCells.add(add);
+					root.getChildren().add(add);
+				}
+			}
+		}
 }
+

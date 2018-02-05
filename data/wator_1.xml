@@ -5,10 +5,10 @@
 
     <dimensions width="50" height="50"></dimensions>
     
-    <params similar="0.5"></params>
+    <params pred_age="10" prey_age="10" pred_energy="10" pred_regain_energy="10"></params>
     
     <cells>
-        <cell state="PREDATOR" x="0" y="1" e_start\="5"></cell>
+        <cell state="PREDATOR" x="0" y="1" e_start="5"></cell>
         <cell state="PREY" x="1" y="1"></cell>
         <cell state="PREY" x="2" y="3"></cell>
         <cell state="PREY" x="10" y="10"></cell>
