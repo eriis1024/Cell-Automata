@@ -30,7 +30,7 @@ public abstract class Simulation	{
 	/**
 	 * Creates copy of Grid, updates each cell according to neighbors and the specific simulation's rules, and replaces current grid with copy when all Cell states have been updated
 	 */
-	public void update()	{
+	public Grid update()	{
 		Grid updatedGrid = grid.copy();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
@@ -39,6 +39,8 @@ public abstract class Simulation	{
 				updatedGrid.set(i, j, nextState);
 			}
 		}
+
+		return updatedGrid;
 	}
 
 	/**

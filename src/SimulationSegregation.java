@@ -28,7 +28,7 @@ public class SimulationSegregation extends Simulation	{
 	 *
 	 */
 	@Override
-	public void update()	{		
+	public Grid update()	{		
 		Grid updatedGrid = grid.copy();
 		ArrayList<Cell> cellstoMove = new ArrayList<Cell>();
 
@@ -40,6 +40,8 @@ public class SimulationSegregation extends Simulation	{
 		}
 
 		moveCells(updatedGrid, cellstoMove);
+
+		return updatedGrid;
 	}
 
 	protected String getNextState(Cell c, Neighborhood n)	{

@@ -35,7 +35,7 @@ public class SimulationWaTor extends Simulation	{
 	 *
 	 */
 	@Override
-	public void update()	{
+	public Grid update()	{
 		Grid updatedGrid = grid.copy();
 		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
 
@@ -49,6 +49,8 @@ public class SimulationWaTor extends Simulation	{
 		// Above code is copy of Simulation superclass update, but passing getNextState updatedGrid also
 
 		moveCells(updatedGrid, toMove);
+
+		return updatedGrid;
 	}
 
 	/**
