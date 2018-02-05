@@ -16,7 +16,7 @@ public class TestRunner extends Application{
 		
 		Grid myGrid = new BasicGrid(width, height, cells, Color.BLACK);
 		
-		return new ConwaySimulation(myGrid);
+		return new SimulationConway(myGrid);
 	}
 	
 	 @Override

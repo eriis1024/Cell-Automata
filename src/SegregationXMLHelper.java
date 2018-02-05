@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 
 public class SegregationXMLHelper extends XMLHelper{
 	
-	private static final SegregationSimulation fooSim = new SegregationSimulation(fooGrid, 0);
+	private static final SimulationSegregation fooSim = new SimulationSegregation(fooGrid, 0);
 	private static final String PROBABILITY = "prob";
 	
 	public Grid getGrid(NodeList dims, ArrayList<Cell> cells) {

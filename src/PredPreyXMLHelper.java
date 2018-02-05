@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 
 public class PredPreyXMLHelper extends XMLHelper {
 
-	private static final PredPreySimulation fooSim = new PredPreySimulation(fooGrid);
+	private static final SimulationWaTor fooSim = new SimulationWaTor(fooGrid);
 	
 	public ArrayList<Cell> getCells(NodeList cellNodes) {
 		for(int i = 0; i<cellNodes.getLength(); i++) { 
