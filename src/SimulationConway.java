@@ -11,9 +11,10 @@ public class SimulationConway extends Simulation	{
 
 	public SimulationConway(Grid g)	{
 		super(g);
+		possStates = new HashMap<String, Color>();
 		possStates.put("ALIVE", Color.WHITE);
 		possStates.put("DEAD", Color.BLACK);
-//		neighborhood = new BasicNeighborhood();
+		neighborhood = new BasicNeighborhood();
 	}
 
 	/**

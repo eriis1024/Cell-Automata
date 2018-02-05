@@ -1,3 +1,6 @@
+/**
+ * @author Erik Riis
+ */
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

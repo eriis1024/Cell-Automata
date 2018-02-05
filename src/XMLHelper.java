@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 
 public abstract class XMLHelper {
-	protected static final Grid fooGrid = new BasicGrid(1,1,new ArrayList<Cell>(), Color.BLACK);
+	protected static final Grid fooGrid = new BasicGrid(5,5,new ArrayList<Cell>(), Color.BLACK);
 	protected static final String WIDTH = "width";
 	protected static final String HEIGHT = "height";
 	protected static final String X = "x";

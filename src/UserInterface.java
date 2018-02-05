@@ -1,10 +1,6 @@
-//This class deals with the user interface components of the project from mouse/keyboard inputs. 
-//Anything the user interacts with directly is handled here.
-//public class userInterface{} - This class deals with the user interface components of the project from mouse/keyboard inputs
-//handles exceptions
-//handles toolbar, file selection
-//handles mouse input
-//handles keyboard input
+/**
+ * @author Erik Riis
+ */
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +30,7 @@ public class UserInterface extends Runner {
 	public static final int BUTTON_SIZE_Y = 70;
 	public static final int SIZE_X = 500;
 	public static final int SIZE_Y = 600;
-	protected int FRAMES_PER_SECOND = 5;
+	protected int FRAMES_PER_SECOND = 3;
 	protected int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	protected double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 	public static final Paint BACKGROUND_COLOR = Color.LIGHTGRAY;
@@ -45,6 +41,7 @@ public class UserInterface extends Runner {
 	protected Grid myGrid;
 	protected Simulation mySim;
 	protected ArrayList<Rectangle> gridCells = new ArrayList<Rectangle>();
+	protected ArrayList<Label> labels = new ArrayList<Label>();
 	protected Stage myStage;
 
 	public void setupScene() {
@@ -89,11 +86,14 @@ public class UserInterface extends Runner {
 		Label conwayLabel = Factory.setLabel(150, 565, "Conway");
 		conwayLabel.getStyleClass().add("simLabel");
 
-		Label predpreyLabel = Factory.setLabel(150, 565, "Predator-Prey");
-		predpreyLabel.getStyleClass().add("simLabel");
+		Label watorLabel = Factory.setLabel(150, 565, "WaTor");
+		watorLabel.getStyleClass().add("simLabel");
 
 		Label fireLabel = Factory.setLabel(150, 565, "Fire");
 		fireLabel.getStyleClass().add("simLabel");
+
+		Label segregationLabel = Factory.setLabel(150, 565, "Segregation");
+		segregationLabel.getStyleClass().add("simLabel");
 
 		Alert speedAlert = Factory.setAlert("Wrong User Input", "Please enter a positive integer value");
 
@@ -151,20 +151,34 @@ public class UserInterface extends Runner {
 			public void handle(ActionEvent event) { //should be in viewer
 				File dataFile = XMLChooser.showOpenDialog(myStage);
 				if (dataFile != null) {
+					for(int i = 0; i < gridCells.size(); i++) {
+						root.getChildren().remove(gridCells.get(i));
+					}
+					animation.stop();
 					mySim = new ParseXML("simulation").getSimulation(dataFile); //create method for this
-					System.out.println(mySim);
-					//root.getChildren().add(conwayLabel);
+					String simName = mySim.toString().substring(0, 11);
+					System.out.println(simName);
+					if (simName.equals("SimulationF")) {
+						removeLabels(labels);
+						labels.add(fireLabel);
+						root.getChildren().add(fireLabel);
+					} else if (simName.equals("SimulationW")) {
+						removeLabels(labels);
+						labels.add(watorLabel);
+						root.getChildren().add(watorLabel);
+					} else if (simName.equals("SimulationC")) {
+						removeLabels(labels);
+						labels.add(conwayLabel);
+						root.getChildren().add(conwayLabel);
+					} else if (simName.equals("SimulationS")) {
+						removeLabels(labels);
+						labels.add(segregationLabel);
+						root.getChildren().add(segregationLabel);
+					}
 					myGrid = mySim.getGrid();
 					int scalingFactorX = 400/myGrid.getWidth();
 					int scalingFactorY = 400/myGrid.getHeight();
-					for (int i = 0; i < myGrid.getWidth(); i++) {
-						for (int j = 0; j < myGrid.getHeight(); j++) {
-							Cell cell = myGrid.get(i, j);
-							Rectangle add = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
-							gridCells.add(add);
-							root.getChildren().add(add);
-						}
-					}
+					addSim(myGrid, scalingFactorX, scalingFactorY);
 				} else {
 					fileAlert.show();
 				}
@@ -180,25 +194,30 @@ public class UserInterface extends Runner {
 		}
 		Grid newGrid = mySim.update();
 		for (int i = 0; i < newGrid.getWidth(); i++) {
-			for (int j=0; j<newGrid.getHeight(); j++) {
+			for (int j = 0; j < newGrid.getHeight(); j++) {
 				Cell cell = newGrid.get(i, j);
-				Rectangle add1 = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
-				root.getChildren().add(add1);
+				Rectangle add = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
+				gridCells.add(add);
+				root.getChildren().add(add);
 			}
 		}
 	}
 
-		protected void addSim(Simulation sim) {
-			int scalingFactorX = 400/myGrid.getWidth();
-			int scalingFactorY = 400/myGrid.getHeight();
-			for (int i = 0; i < myGrid.getWidth(); i++) {
-				for (int j = 0; j < myGrid.getHeight(); j++) {
-					Cell cell = myGrid.get(i, j);
-					Rectangle add = CellTransformer.toRectangle(cell, scalingFactorX, scalingFactorY);
-					gridCells.add(add);
-					root.getChildren().add(add);
-				}
+	protected void addSim(Grid grid, int scaleX, int scaleY) {
+		for (int i = 0; i < myGrid.getWidth(); i++) {
+			for (int j = 0; j < myGrid.getHeight(); j++) {
+				Cell cell = myGrid.get(i, j);
+				Rectangle add = CellTransformer.toRectangle(cell, scaleX, scaleY);
+				gridCells.add(add);
+				root.getChildren().add(add);
 			}
 		}
+	}
+	
+	protected void removeLabels(ArrayList<Label> lbls) {
+		for (int i = 0; i < lbls.size(); i++) {
+			root.getChildren().remove(lbls.get(i));
+		}
+	}	
 }
 
