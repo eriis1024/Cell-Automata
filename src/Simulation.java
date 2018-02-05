@@ -50,9 +50,9 @@ public abstract class Simulation	{
 	 * @param
 	 */
 	protected String getState(Cell c)	{
-		for (Map.Entry state:possStates.entrySet())	{
-			if (state.getValue() == c.getColor())	{
-				return state.getKey().toString();
+		for (String state:possStates.keySet())	{
+			if (possStates.get(state) == c.getColor())	{
+				return state;
 			}
 		}
 
