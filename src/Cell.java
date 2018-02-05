@@ -45,7 +45,7 @@ public class Cell extends Polygon	{
 	 *
 	 */
 	public int getY()	{
-		return xInd;
+		return yInd;
 	}
 
 
