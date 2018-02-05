@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ParseXML {
-
+    
     protected static final String TYPE_NOT_SUPPORTED = "Simulation type in XML file not supported";
     // name of root attribute that notes the type of file expecting to parse
     private final String TYPE_ATTRIBUTE;
@@ -36,16 +36,16 @@ public class ParseXML {
         Element root = getRootElement(dataFile);
         if (! isValidFile(root, Simulation.SUPPORTED_TYPES)) throw new XMLException(TYPE_NOT_SUPPORTED, Simulation.SUPPORTED_TYPES);
         String type = root.getAttribute(TYPE_ATTRIBUTE);
-
-        NodeList paramNodes = root.getElementsByTagName("params");
+        
+        NodeList paramNodes = root.getElementsByTagName("params");        
         NodeList cellNodes = root.getElementsByTagName("cells");
         NodeList dimNodes = root.getElementsByTagName("dimensions");
         NodeList headNodes = root.getElementsByTagName("head");
         XMLHelper helperInstance;
-
+    
         try {
             Class<?> helperCls = Class.forName(type + "XMLHelper");
-            helperInstance = (XMLHelper)(helperCls).getConstructor().newInstance();
+            helperInstance = (XMLHelper)(helperCls).getConstructor().newInstance();         
             Method getCells = helperCls.getMethod("getCells", NodeList.class);
             Method getGrid = helperCls.getMethod("getGrid", NodeList.class, ArrayList.class);
             Method initSimulation = helperCls.getMethod("initSimulation", NodeList.class, Grid.class);
@@ -54,21 +54,21 @@ public class ParseXML {
             Grid g = (Grid)(getGrid.invoke(helperInstance, dimNodes, cells));
             Simulation sim = helperInstance.initSimulation(paramNodes, g);
             return sim;
-        }
+        } 
         catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        } 
         catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        
         // TODO fix this later
         return null;
         // throw xml error
     }
-
+    
     // Get root element of an XML file
     private Element getRootElement (File xmlFile) {
         try {

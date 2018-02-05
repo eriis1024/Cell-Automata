@@ -1,15 +1,20 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javafx.scene.paint.Color;
 
+/**
+ * @author Jeremy Chen
+ *
+ */
 public class BasicGrid implements Grid {
 	
 	private int myWidth;
 	private int myHeight;
+	private Color defaultColor;
 	private Cell[][] cellArray;
 	
-	public BasicGrid(int width, int height, ArrayList<Cell> cells) {
+	public BasicGrid(int width, int height, ArrayList<Cell> cells, Color defaultCellColor) {
+		defaultColor = defaultCellColor;
 		myWidth = width;
 		myHeight = height;
 		cellArray = new Cell[height][width];
@@ -29,7 +34,7 @@ public class BasicGrid implements Grid {
 	}
 	
 	public void set(int x, int y, Color c) {
-		get(x,y).colorCell(c);
+		get(x,y).setFill(c);
 	}
 	
 	public void insert(Cell c) {
@@ -41,6 +46,9 @@ public class BasicGrid implements Grid {
 	}
 	
 	private void init(ArrayList<Cell> cells) {
+		for(int i = 0; i<myWidth; i++) {
+			for(int j = 0; j<myHeight; j++) insert(new Cell(defaultColor, i, j));
+		}
 		for (Cell c: cells) insert(c);
 	}
 	
@@ -51,6 +59,6 @@ public class BasicGrid implements Grid {
 				clonedCells.add(get(i,j).copy());
 			}
 		}
-		return new BasicGrid(getWidth(), getHeight(), clonedCells);
+		return new BasicGrid(getWidth(), getHeight(), clonedCells, defaultColor);
 	}
 }
