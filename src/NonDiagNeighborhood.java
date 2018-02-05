@@ -11,7 +11,7 @@ public class NonDiagNeighborhood implements Neighborhood{
 			int nX = x + i;
 			int nY = y + i;
 			if(nX>=0 && nX < g.getWidth()) neighbors.add(g.get(nX, y));
-			if(nY>=0 && nY < g.getHeight()) neighbors.add(g.get(y, nY));
+			if(nY>=0 && nY < g.getHeight()) neighbors.add(g.get(x, nY));
 		}
 		return neighbors;
 	}

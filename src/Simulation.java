@@ -11,7 +11,7 @@ public abstract class Simulation {
 	        "Conway",
 	        "Segregation",
 	        "Fire",
-	        "PredPrey"});
+	        "WaTor"});
 	
 	public Simulation(Grid g) {
 		myGrid = g;

@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 
 public class ConwayXMLHelper extends XMLHelper{
 	
-	private static final ConwaySimulation fooSim = new ConwaySimulation(fooGrid);
+	private static final SimulationConway fooSim = new SimulationConway(fooGrid);
 	
 	public Grid getGrid(NodeList dims, ArrayList<Cell> cells) {
 		int[] dimensions = getDimensions(dims);

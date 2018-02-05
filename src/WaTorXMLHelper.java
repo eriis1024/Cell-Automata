@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 
 public class WaTorXMLHelper extends XMLHelper{
 	
-	private static final SimulationWaTor fooSim = new SimulationWaTor(fooGrid, 0);
+	private static final SimulationWaTor fooSim = new SimulationWaTor(fooGrid, 0, 0, 0, 0);
 	private static final String PREY_AGE = "prey_age";
 	private static final String PRED_AGE = "pred_age";
 	private static final String PRED_ENERGY = "pred_energy";
