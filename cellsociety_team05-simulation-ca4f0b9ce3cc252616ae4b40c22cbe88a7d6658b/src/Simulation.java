@@ -30,7 +30,7 @@ public abstract class Simulation	{
 	/**
 	 * Creates copy of Grid, updates each cell according to neighbors and the specific simulation's rules, and replaces current grid with copy when all Cell states have been updated
 	 */
-	public Grid update()	{
+	public void update()	{
 		Grid updatedGrid = grid.copy();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
@@ -39,10 +39,6 @@ public abstract class Simulation	{
 				updatedGrid.set(i, j, nextState);
 			}
 		}
-
-		grid = updatedGrid;
-
-		return grid;
 	}
 
 	/**
@@ -50,9 +46,9 @@ public abstract class Simulation	{
 	 * @param
 	 */
 	protected String getState(Cell c)	{
-		for (String state:possStates.keySet() )	{
-			if (possStates.get(state) == c.getColor())	{
-				return state;
+		for (Map.Entry state:possStates.entrySet())	{
+			if (state.getValue() == c.getColor())	{
+				return state.getKey().toString();
 			}
 		}
 
@@ -75,11 +71,4 @@ public abstract class Simulation	{
 	public HashMap<String, Color> getStates()	{
 		return possStates;
 	}
-
-	/**
-	 *
-	 */
-	public Grid getGrid()	{
-		return grid;
-	}
-} 
+}

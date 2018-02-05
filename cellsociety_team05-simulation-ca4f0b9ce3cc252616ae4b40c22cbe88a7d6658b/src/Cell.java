@@ -2,6 +2,7 @@
  * @author Maya Messinger (mm479)
  * Started 31 Jan 18
  */
+import java.util.HashMap;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -44,7 +45,7 @@ public class Cell extends Polygon	{
 	 *
 	 */
 	public int getY()	{
-		return yInd;
+		return xInd;
 	}
 
 
