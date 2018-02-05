@@ -105,7 +105,7 @@ public class SimulationSegregation extends Simulation	{
 		ArrayList<Cell> emptyCells = new ArrayList<Cell>();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
-			for (int j = 0; j < grid.getHeight(); i++)	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
 				if (grid.get(i, j).getColor() == possStates.get("EMPTY"))	{
 					emptyCells.add(grid.get(i, j));
 				}
