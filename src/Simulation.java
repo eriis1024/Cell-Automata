@@ -75,7 +75,7 @@ public abstract class Simulation	{
 	/**
 	 *
 	 */
-	public Grd getGrid()	{
+	public Grid getGrid()	{
 		return grid;
 	}
 }
