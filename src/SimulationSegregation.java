@@ -58,13 +58,14 @@ public class SimulationSegregation extends Simulation	{
 		HashMap<String, Integer> nStates = getNeighborStates(c, n);
 		int numNeighbors = nStates.get("X") + nStates.get("O");
 
-		if ((double) nStates.get(getState(c)) / numNeighbors < SATISFIED)	{
-			cellstoMove.add(c);
-			return "EMPTY";
+		if (c.getColor() == possStates.get("X") || c.getColor() == possStates.get("X"))	{
+			if ((double) nStates.get(getState(c)) / numNeighbors < SATISFIED)	{
+				cellstoMove.add(c);
+				return "EMPTY";
+			}
 		}
-		else	{
-			return getState(c);	// cell does not move or change state
-		}
+		
+		return getState(c);	// cell does not move or change state
 	}
 
 
@@ -101,7 +102,7 @@ public class SimulationSegregation extends Simulation	{
 		ArrayList<Cell> emptyCells = new ArrayList<Cell>();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
-			for (int j = 0; j < grid.getHeight(); i++)	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
 				if (grid.get(i, j).getColor() == possStates.get("EMPTY"))	{
 					emptyCells.add(grid.get(i, j));
 				}
