@@ -3,13 +3,13 @@ import java.util.HashMap;
 
 import javafx.scene.paint.Color;
 
-public class ConwaySimulation extends Simulation{
+public class SimulationConway extends Simulation{
 	
 	private static final String DEAD = "DEAD";
 	private static final String ALIVE = "ALIVE";
 	public static final Color DEFAULT_COLOR = Color.BLACK;
 	
-	public ConwaySimulation(Grid g) {
+	public SimulationConway(Grid g) {
 		super(g);		
 		initStates();
 	}

@@ -30,9 +30,4 @@ public class Cell extends Polygon{
 	public Cell copy() { //deep copy
 		return new Cell((Color)getFill(), myX, myY);
 	}
-	
-	@Override
-	public boolean equals(Object other) {
-		return other instanceof Cell && getFill() == ((Cell)other).getFill();
-	}
 }

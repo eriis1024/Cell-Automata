@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 import javafx.scene.paint.Color;
 
-public class FireSimulation extends Simulation{
+public class SimulationFire extends Simulation{
 	
 	private static final String BURNING = "BURNING";
 	private static final String EMPTY = "EMPTY";	
@@ -11,7 +11,7 @@ public class FireSimulation extends Simulation{
 	private double burningProb;
 	public static final Color DEFAULT_COLOR = Color.GRAY;
 	
-	public FireSimulation(Grid g, double prob) {
+	public SimulationFire(Grid g, double prob) {
 		super(g);
 		burningProb = prob;
 		myNeighborhood = new NonDiagNeighborhood();
