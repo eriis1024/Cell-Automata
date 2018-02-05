@@ -23,7 +23,7 @@ public class SimulationWaTor extends Simulation	{
 			put("PREY", Color.YELLOW);
 			put("PREDATOR", Color.BLACK);
 		}};
-		neighborhood = new NonDiagNeighborhood();
+		neighborhood = new WrapNeighborhood();
 
 		PREY_BREED_AGE = prey_breed_age;
 		PRED_BREED_AGE = pred_breed_age;
