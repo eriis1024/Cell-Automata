@@ -40,7 +40,9 @@ public abstract class Simulation	{
 			}
 		}
 
-		return updatedGrid;
+		grid = updatedGrid
+
+		return grid;
 	}
 
 	/**
@@ -80,4 +82,4 @@ public abstract class Simulation	{
 	public Grid getGrid()	{
 		return grid;
 	}
-}
+} 

@@ -41,7 +41,9 @@ public class SimulationSegregation extends Simulation	{
 
 		moveCells(updatedGrid, cellstoMove);
 
-		return updatedGrid;
+		grid = updatedGrid;
+
+		return grid;
 	}
 
 	protected String getNextState(Cell c, Neighborhood n)	{

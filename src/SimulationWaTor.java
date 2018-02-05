@@ -50,7 +50,9 @@ public class SimulationWaTor extends Simulation	{
 
 		moveCells(updatedGrid, toMove);
 
-		return updatedGrid;
+		grid = updatedGrid;
+
+		return grid;
 	}
 
 	/**
