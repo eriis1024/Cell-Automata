@@ -1,0 +1,52 @@
+
+.startButton {
+    -fx-text-fill: #ffffff;
+    -fx-font: 16 Arial;
+    -fx-background-color: #52D017;
+}
+.startButton:hover {
+     -fx-background-color: #59E817;
+}
+.startButton:pressed {
+   -fx-background-color: #6CBB3C;
+   -fx-scale-y: 1.01;
+}
+
+.pauseButton {
+    -fx-text-fill: #ffffff;
+    -fx-font: 16 Arial;
+    -fx-background-color: #E41B17;
+}
+.pauseButton:hover {
+     -fx-background-color: #F62817;
+}
+.pauseButton:pressed {
+   -fx-background-color: #C11B17;
+   -fx-scale-y: 1.01;
+}
+
+.stepButton {
+    -fx-text-fill: #ffffff;
+    -fx-font: 16 Arial;
+    -fx-background-color: #2B60DE;
+}
+.stepButton:hover {
+     -fx-background-color: #1589FF;
+}
+.stepButton:pressed {
+   -fx-background-color: #0041C2;
+   -fx-scale-y: 1.01;
+}
+
+.titleLabel {
+    -fx-font-size: 25;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+.simLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    
+}
+

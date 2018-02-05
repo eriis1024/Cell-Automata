@@ -7,14 +7,13 @@ import org.w3c.dom.NodeList;
 
 import javafx.scene.paint.Color;
 
-public class FireXMLHelper extends XMLHelper{
+public class ConwayXMLHelper extends XMLHelper{
 	
-	private static final SimulationFire fooSim = new SimulationFire(fooGrid, 0);
-	private static final String PROBABILITY = "prob";
+	private static final ConwaySimulation fooSim = new ConwaySimulation(fooGrid);
 	
 	public Grid getGrid(NodeList dims, ArrayList<Cell> cells) {
 		int[] dimensions = getDimensions(dims);
-		return new BasicGrid(dimensions[0], dimensions[1], cells, SimulationFire.DEFAULT_COLOR);
+		return new BasicGrid(dimensions[0], dimensions[1], cells, ConwaySimulation.DEFAULT_COLOR);
 	}
 	
 	public HashMap<String, Color> getStates(){
@@ -22,7 +21,6 @@ public class FireXMLHelper extends XMLHelper{
 	}
 	
 	public Simulation initSimulation(NodeList params, Grid g) {
-		double prob = Double.parseDouble(((Element)(params.item(0))).getAttribute(PROBABILITY));
-		return new SimulationFire(g, prob);
+		return new ConwaySimulation(g);
 	}
 }
