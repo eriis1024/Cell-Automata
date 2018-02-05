@@ -67,4 +67,6 @@ public class SimulationFire extends Simulation	{
 
 		return nStates;
 	}
+	
+	
 }

@@ -1,3 +1,6 @@
+/**
+ * @author Erik Riis
+ */
 
 import javafx.scene.shape.Rectangle;
 
