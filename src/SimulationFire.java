@@ -34,12 +34,10 @@ public class SimulationFire extends Simulation	{
 
 		// empty cells do nothing
 		if (c.getColor() == possStates.get("TREE"))	{
-			if (nStates.get("BURNING") >= 1)	{
-				if (Math.random() <= probCatch)	{
-					return "BURNING";
-				}
+			if (nStates.get("BURNING") > 0 && Math.random() <= probCatch)	{
+				return "BURNING";
 			}
-
+			
 			return "TREE";
 		}		
 		else if (c.getColor() == possStates.get("BURNING"))	{

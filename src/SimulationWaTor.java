@@ -78,7 +78,7 @@ public class SimulationWaTor extends Simulation	{
 				((CellPredator)c).eat(PRED_REGAIN_ENERGY);	// regain energy from eating
 
 				if (!checkAlive(c))	{	// if dead, end
-					return "FREE";
+					return "EMPTY";
 				}
 
 				return checkBreed(c, updatedGrid);
@@ -87,14 +87,14 @@ public class SimulationWaTor extends Simulation	{
 				addToMove(c, nStates, "EMPTY", toMove);	// move predator to EMPTY cell (random if multiple)
 
 				if (!checkAlive(c))	{	// if dead, end
-					return "FREE";
+					return "EMPTY";
 				}
 
 				return checkBreed(c, updatedGrid);
 			}
 			else	{	// if nowhere to move (all neighbors are also predators), stay in place
 				if (!checkAlive(c))	{	// if dead, end
-					return "FREE";
+					return "EMPTY";
 				}
 
 				return "PREDATOR";
@@ -110,8 +110,8 @@ public class SimulationWaTor extends Simulation	{
 				return "PREY";
 			}
 		}
-		else	{	// free cell, assume stay free and later move method will cover if necessary
-			return "FREE";
+		else	{	// EMPTY cell, assume stay EMPTY and later move method will cover if necessary
+			return "EMPTY";
 		}
 
 		return null;
@@ -194,7 +194,7 @@ public class SimulationWaTor extends Simulation	{
 	private boolean checkAlive(Cell c)	{
 		((CellPredator)c).loseEnergy();	// predator loses energy every round, no matter what
 		if (((CellPredator)c).energy == 0)	{
-			c = new Cell(possStates.get("FREE"), c.getX(), c.getY());
+			c = new Cell(possStates.get("EMPTY"), c.getX(), c.getY());
 			return false;
 		}
 
