@@ -64,9 +64,21 @@ public class BasicGrid implements Grid {
 	public void insert(Cell c) {
 		try {
 			cellArray[c.getY()][c.getX()] = c;
+			get(c.getX(), c.getY()).setFill(c.getColor());
 		}catch(IndexOutOfBoundsException e) {
 			throw new IndexOutOfBoundsException("bad index for grid");
 		}
+	}
+
+	/* (non-Javadoc)
+	 *					JEREMPY LOOK AT THIS
+	 *
+	 *
+	 *						
+	 */
+	public void remove(Cell c)	{
+		cellArray[c.getY()][c.getX()] = new Cell(c.DEFAULT_COLOR, c.getX(), c.getY());
+		c = null;
 	}
 	
 	/**

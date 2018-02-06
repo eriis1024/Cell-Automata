@@ -8,6 +8,7 @@ import javafx.scene.shape.Polygon;
 
 public class CellPrey extends Cell	{
 	public int breedAge;
+	private boolean alive;
 
 	/**
 	 *
@@ -15,5 +16,14 @@ public class CellPrey extends Cell	{
 	public CellPrey(Color c, int x, int y)	{
 		super(c, x, y);
 		breedAge = 0;
+		alive = true;
+	}
+
+	public void getEaten()	{
+		alive = false;
+	}
+
+	public boolean getAlive()	{
+		return alive;
 	}
 }

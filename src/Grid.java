@@ -38,6 +38,12 @@ public interface Grid{
 	 * Will insert Cell c to the x & y coordinates in the cell
 	 */
 	public void insert(Cell c);
+
+	/**
+	 * @param c
+	 * will remove cell from array and replace with empty cell
+	 */
+	public void remove(Cell c);
 	
 	/**
 	 * @return a deep copy of Grid

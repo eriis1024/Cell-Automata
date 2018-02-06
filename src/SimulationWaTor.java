@@ -23,7 +23,7 @@ public class SimulationWaTor extends Simulation	{
 			put("PREY", Color.YELLOW);
 			put("PREDATOR", Color.BLACK);
 		}};
-		neighborhood = new NonDiagNeighborhood();
+		neighborhood = new WrapNeighborhood();
 
 		PREY_BREED_AGE = prey_breed_age;
 		PRED_BREED_AGE = pred_breed_age;
@@ -37,12 +37,31 @@ public class SimulationWaTor extends Simulation	{
 	@Override
 	public Grid update()	{
 		Grid updatedGrid = grid.copy();
-		HashMap<Cell, Point2D> toMove = new HashMap<Cell, Point2D>();
+		HashMap<Cell, Cell> toMove = new HashMap<Cell, Cell>();
 
 		for (int i = 0; i < grid.getWidth(); i++)	{
 			for (int j = 0; j < grid.getHeight(); j++)	{
-				Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, updatedGrid, toMove));
-				updatedGrid.set(i, j, nextState);
+				if (grid.get(i, j).getColor() == possStates.get("PREDATOR"))	{
+					Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, updatedGrid, toMove));
+					updatedGrid.set(i, j, nextState);
+				}
+			}
+		}
+
+		for (int i = 0; i < grid.getWidth(); i++)	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
+				if (grid.get(i, j).getColor() == possStates.get("PREY") && ((CellPrey)grid.get(i, j)).getAlive())	{
+					Color nextState = possStates.get(getNextState(grid.get(i, j), neighborhood, updatedGrid, toMove));
+					updatedGrid.set(i, j, nextState);
+				}
+			}
+		}
+
+		for (int i = 0; i < grid.getWidth(); i++)	{
+			for (int j = 0; j < grid.getHeight(); j++)	{
+				if (grid.get(i, j).getColor() == possStates.get("EMPTY"))	{
+					updatedGrid.set(i, j, possStates.get("EMPTY"));
+				}
 			}
 		}
 
@@ -70,16 +89,16 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 * @param
 	 */
-	private String getNextState(Cell c, Neighborhood n, Grid updatedGrid, HashMap<Cell, Point2D> toMove)	{
-		HashMap<String, ArrayList<Point2D>> nStates = getNeighborStateLocs(c, n);
+	private String getNextState(Cell c, Neighborhood n, Grid updatedGrid, HashMap<Cell, Cell> toMove)	{
+		HashMap<String, ArrayList<Cell>> nStates = getNeighborStateLocs(c, n);
 
-		if (c instanceof CellPredator)	{
+		if (c.getColor() == possStates.get("PREDATOR"))	{
 			((CellPredator)c).breedAge++;
 			if (nStates.containsKey("PREY"))	{	// if any prey to eat in neighborhood
 				addToMove(c, nStates, "PREY", toMove);	// move to prey location (random if multiple)
 				((CellPredator)c).eat(PRED_REGAIN_ENERGY);	// regain energy from eating
 
-				if (!checkAlive(c))	{	// if dead, end
+				if (!checkAlive(c, updatedGrid))	{	// if dead, end
 					return "EMPTY";
 				}
 
@@ -88,35 +107,34 @@ public class SimulationWaTor extends Simulation	{
 			else if (nStates.containsKey("EMPTY"))	{	// if no prey, but EMPTY cells
 				addToMove(c, nStates, "EMPTY", toMove);	// move predator to EMPTY cell (random if multiple)
 
-				if (!checkAlive(c))	{	// if dead, end
+				if (!checkAlive(c, updatedGrid))	{	// if dead, end
 					return "EMPTY";
 				}
 
 				return checkBreed(c, updatedGrid);
 			}
 			else	{	// if nowhere to move (all neighbors are also predators), stay in place
-				if (!checkAlive(c))	{	// if dead, end
+				if (!checkAlive(c, updatedGrid))	{	// if dead, end
 					return "EMPTY";
 				}
 
 				return "PREDATOR";
 			}
 		}
-		else if (c instanceof CellPrey)	{
+		if (c.getColor() == possStates.get("PREY"))	{
 			((CellPrey)c).breedAge++;
-			if (nStates.containsKey("EMPTY"))	{	// if EMPTY spots
-				addToMove(c, nStates, "EMPTY", toMove);
-				checkBreed(c, updatedGrid);
+			if (nStates.containsKey("EMPTY"))	{	// if no prey, but EMPTY cells
+				addToMove(c, nStates, "EMPTY", toMove);	// move predator to EMPTY cell (random if multiple)
+
+				return checkBreed(c, updatedGrid);
 			}
-			else	{	// no spaces to move to, no movement, no reproduction
+			else	{	// if nowhere to move (all neighbors are also predators), stay in place
 				return "PREY";
 			}
 		}
 		else	{	// EMPTY cell, assume stay EMPTY and later move method will cover if necessary
 			return "EMPTY";
 		}
-
-		return null;
 	}
 
 	/**
@@ -129,38 +147,38 @@ public class SimulationWaTor extends Simulation	{
 		return null;
 	}
 
-	private HashMap<String, ArrayList<Point2D>> getNeighborStateLocs(Cell c, Neighborhood n)	{
-		HashMap<String, ArrayList<Point2D>> nStates = new HashMap<String, ArrayList<Point2D>>();
+	private HashMap<String, ArrayList<Cell>> getNeighborStateLocs(Cell c, Neighborhood n)	{
+		HashMap<String, ArrayList<Cell>> nStates = new HashMap<String, ArrayList<Cell>>();
 
 		for (Cell neighbor:n.getNeighbors(grid, c))	{
 			if (neighbor.getColor() == possStates.get("EMPTY"))	{
 				if (!nStates.containsKey("EMPTY"))	{
-					ArrayList<Point2D> indices = new ArrayList<Point2D>();
-					indices.add(new Point2D(neighbor.getX(), neighbor.getY()));
+					ArrayList<Cell> indices = new ArrayList<Cell>();
+					indices.add(neighbor);
 					nStates.put("EMPTY", indices);
 				}
 				else	{
-					nStates.get("EMPTY").add(new Point2D(neighbor.getX(), neighbor.getY()));
+					nStates.get("EMPTY").add(neighbor);
 				}
 			}
 			else if (neighbor.getColor() == possStates.get("PREY"))	{
 				if (!nStates.containsKey("PREY"))	{
-					ArrayList<Point2D> indices = new ArrayList<Point2D>();
-					indices.add(new Point2D(neighbor.getX(), neighbor.getY()));
+					ArrayList<Cell> indices = new ArrayList<Cell>();
+					indices.add(neighbor);
 					nStates.put("PREY", indices);
 				}
 				else	{
-					nStates.get("PREY").add(new Point2D(neighbor.getX(), neighbor.getY()));
+					nStates.get("PREY").add(neighbor);
 				}
 			}
 			else if (neighbor.getColor() == possStates.get("PREDATOR"))	{
 				if (!nStates.containsKey("PREDATOR"))	{
-					ArrayList<Point2D> indices = new ArrayList<Point2D>();
-					indices.add(new Point2D(neighbor.getX(), neighbor.getY()));
+					ArrayList<Cell> indices = new ArrayList<Cell>();
+					indices.add(neighbor);
 					nStates.put("PREDATOR", indices);
 				}
 				else	{
-					nStates.get("PREDATOR").add(new Point2D(neighbor.getX(), neighbor.getY()));
+					nStates.get("PREDATOR").add(neighbor);
 				}
 			}
 		}
@@ -175,7 +193,7 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 * @param
 	 */
-	private void addToMove(Cell c, HashMap<String, ArrayList<Point2D>> nStates, String state, HashMap<Cell, Point2D> toMove)	{
+	private void addToMove(Cell c, HashMap<String, ArrayList<Cell>> nStates, String state, HashMap<Cell, Cell> toMove)	{
 		int moveTo = (int) (Math.random() * nStates.get(state).size());
 		toMove.put(c, nStates.get(state).get(moveTo));
 	}
@@ -185,18 +203,30 @@ public class SimulationWaTor extends Simulation	{
 	 * @param
 	 * @param
 	 */
-	private void moveCells(Grid updatedGrid, HashMap<Cell, Point2D> toMove)	{
+	private void moveCells(Grid updatedGrid, HashMap<Cell, Cell> toMove)	{
 		for (Cell sprite:toMove.keySet())	{
+			if (toMove.get(sprite).getColor() == possStates.get("PREY"))	{
+				((CellPrey)toMove.get(sprite)).getEaten();
+			}
+			updatedGrid.remove(toMove.get(sprite));
+
+			if (updatedGrid.get(sprite.getX(), sprite.getY()).getColor() != possStates.get("EMPTY")
+				&& updatedGrid.get(sprite.getX(), sprite.getY()).getColor() != possStates.get("PREDATOR"))	{
+				updatedGrid.insert(new Cell(possStates.get("EMPTY"), sprite.getX(), sprite.getY()));
+			}
+
 			sprite.setX((int)toMove.get(sprite).getX());
 			sprite.setY((int)toMove.get(sprite).getY());
 			updatedGrid.insert(sprite);
 		}
 	}
 
-	private boolean checkAlive(Cell c)	{
+	private boolean checkAlive(Cell c, Grid updatedGrid)	{
 		((CellPredator)c).loseEnergy();	// predator loses energy every round, no matter what
-		if (((CellPredator)c).energy == 0)	{
-			c = new Cell(possStates.get("EMPTY"), c.getX(), c.getY());
+		if (((CellPredator)c).energy <= 0)	{
+			((CellPredator)c).breedAge = 0;
+			updatedGrid.remove(c);
+
 			return false;
 		}
 
@@ -235,6 +265,6 @@ public class SimulationWaTor extends Simulation	{
 			}
 		}
 
-		return null;
+		return "EMPTY";
 	}
 }

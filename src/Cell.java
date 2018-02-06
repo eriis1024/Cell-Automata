@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Cell extends Polygon	{
+	public static final Color DEFAULT_COLOR = Color.BLUE;
 	protected String state;
 	protected int xInd;
 	protected int yInd;
