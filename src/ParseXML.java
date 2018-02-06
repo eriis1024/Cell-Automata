@@ -14,19 +14,33 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Jeremy Chen
+ *	"Runner" class containing DocumentBuilder for parsing XML and interpreting as Simulations
+ */
 public class ParseXML {
     
     protected static final String TYPE_NOT_SUPPORTED = "Simulation type in XML file not supported";
-    // name of root attribute that notes the type of file expecting to parse
     private final String TYPE_ATTRIBUTE;
-    // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private final DocumentBuilder DOCUMENT_BUILDER;
 
+    /**
+     * @param type
+     * 
+     * Will take in a type param to tell program what tag to look for in XML file root
+     */
     public ParseXML (String type) {
         DOCUMENT_BUILDER = getDocumentBuilder();
         TYPE_ATTRIBUTE =  type;
     }
 
+    /**
+     * @param dataFile
+     * @return returns a Simulation based off of the XML file chosen
+     * @throws XMLException
+     * 
+     * Contains main functionality of this class: will load in XML File, and call requisite XMLHelper class to build a Simulation
+     */
     public Simulation getSimulation (File dataFile) throws XMLException{
         Element root = getRootElement(dataFile);
         if (! isValidFile(root, Simulation.SUPPORTED_TYPES)) throw new XMLException(TYPE_NOT_SUPPORTED, Simulation.SUPPORTED_TYPES);
@@ -64,7 +78,12 @@ public class ParseXML {
         // throw xml error
     }
     
-    // Get root element of an XML file
+    /**
+     * @param xmlFile
+     * @return returns root Element of a given xmlFile
+     * 	
+     * Taken from Duvall's sample XML parser
+     */
     private Element getRootElement (File xmlFile) {
         try {
             DOCUMENT_BUILDER.reset();
@@ -76,30 +95,52 @@ public class ParseXML {
         }
     }
 
-    // Returns if this is a valid XML file for the specified object type
+    /**
+     * @param root
+     * @param types
+     * @return
+     * 
+     * Will determine whether the file is valid or not
+     */
     private boolean isValidFile (Element root, List<String> types) {
         for(String type: types) if(getAttribute(root, TYPE_ATTRIBUTE).equals(type)) return true;
         return false;
     }
 
-    // Get value of Element's attribute
+    /**
+     * @param e
+     * @param attributeName
+     * @return
+     * 
+     * Will return the String value of a specific Element's attribute
+     */
     private String getAttribute (Element e, String attributeName) {
         return e.getAttribute(attributeName);
     }
 
-    // Get value of Element's text
-    private String getTextValue (Element e, String tagName) {
-        NodeList nodeList = e.getElementsByTagName(tagName);
-        if (nodeList != null && nodeList.getLength() > 0) {
-            return nodeList.item(0).getTextContent();
-        }
-        else {
-            // FIXME: empty string or null, is it an error to not find the text value?
-            return "";
-        }
-    }
+    //NOT USED
+//    /**
+//     * @param e
+//     * @param tagName
+//     * @return
+//     * 
+//     * Will return 
+//     */
+//    private String getTextValue (Element e, String tagName) {
+//        NodeList nodeList = e.getElementsByTagName(tagName);
+//        if (nodeList != null && nodeList.getLength() > 0) {
+//            return nodeList.item(0).getTextContent();
+//        }
+//        else {
+//            // FIXME: empty string or null, is it an error to not find the text value?
+//            return "";
+//        }
+//    }
 
-    // Helper method to do the boilerplate code needed to make a documentBuilder.
+    /**
+     * @return
+     * Will return a Document Builder
+     */
     private DocumentBuilder getDocumentBuilder () {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder();

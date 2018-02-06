@@ -8,7 +8,9 @@
     <params></params>
     
     <cells>
-        <cell state="ALIVE" x="0" y="1"></cell>
+        <cell state="ALIVE" x="0" y="3"></cell>
+        <cell state="ALIVE" x="1" y="3"></cell>
+        <cell state="ALIVE" x="2" y="3"></cell>
         <cell state="ALIVE" x="10" y="0"></cell>
         <cell state="ALIVE" x="13" y="9"></cell>
         <cell state="ALIVE" x="14" y="4"></cell>

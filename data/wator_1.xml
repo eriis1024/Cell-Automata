@@ -12,6 +12,9 @@
         <cell state="PREY" x="1" y="1"></cell>
         <cell state="PREY" x="2" y="3"></cell>
         <cell state="PREY" x="10" y="10"></cell>
+        <cell state="PREY" x="2" y="4"></cell>
+        <cell state="PREY" x="2" y="5"></cell>
+        <cell state="PREY" x="2" y="6"></cell>
         <cell state="PREDATOR" x="11" y="10" e_start="5"></cell>
         <cell state="PREY" x="9" y="5"></cell>
         <cell state="EMPTY" x="2" y="1"></cell>

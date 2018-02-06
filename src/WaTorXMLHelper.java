@@ -7,6 +7,10 @@ import org.w3c.dom.NodeList;
 
 import javafx.scene.paint.Color;
 
+/**
+ * @author Jeremy Chen (jc587)
+ *	Subclass of XMLHelper used to instantiate SimulationWaTor from an XML File
+ */
 public class WaTorXMLHelper extends XMLHelper{
 	
 	private static final SimulationWaTor fooSim = new SimulationWaTor(fooGrid, 0, 0, 0, 0);
@@ -16,15 +20,26 @@ public class WaTorXMLHelper extends XMLHelper{
 	private static final String PRED_REGAIN_ENERGY = "pred_regain_energy";
 	private static final String START_ENERGY = "e_start";
 	
+	/* (non-Javadoc)
+	 * @see XMLHelper#getGrid(org.w3c.dom.NodeList, java.util.ArrayList)
+	 */
+	@Override
 	public Grid getGrid(NodeList dims, ArrayList<Cell> cells) {
 		int[] dimensions = getDimensions(dims);
 		return new BasicGrid(dimensions[0], dimensions[1], cells, SimulationWaTor.DEFAULT_COLOR);
 	}
 	
+	/* (non-Javadoc)
+	 * @see XMLHelper#getStates()
+	 */
+	@Override
 	public HashMap<String, Color> getStates(){
 		return fooSim.getStates();
 	}
 	
+	/* (non-Javadoc)
+	 * @see XMLHelper#getCells(org.w3c.dom.NodeList)
+	 */
 	@Override
 	public ArrayList<Cell> getCells(NodeList cellNodes) {
 		Element cellNode = (Element)(cellNodes.item(0));
@@ -43,9 +58,7 @@ public class WaTorXMLHelper extends XMLHelper{
 					int startEnergy = Integer.parseInt(cellElement.getAttribute(START_ENERGY));
 					c = new CellPredator(cellColor, x, y, startEnergy);
 				}
-				else if(cellType.equals("PREY")) {
-					c = new CellPrey(cellColor, x, y);
-				}
+				else if(cellType.equals("PREY")) c = new CellPrey(cellColor, x, y);
 				else c = new Cell(cellColor, x, y);
 				cells.add(c);
 			}
@@ -53,6 +66,10 @@ public class WaTorXMLHelper extends XMLHelper{
 		return cells;
 	}
 	
+	/* (non-Javadoc)
+	 * @see XMLHelper#initSimulation(org.w3c.dom.NodeList, Grid)
+	 */
+	@Override
 	public Simulation initSimulation(NodeList params, Grid g) {
 		int preyAge = Integer.parseInt(((Element)(params.item(0))).getAttribute(PREY_AGE));
 		int predAge = Integer.parseInt(((Element)(params.item(0))).getAttribute(PRED_AGE));

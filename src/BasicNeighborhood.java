@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * @author Jeremy Chen (jc587)
+ *	Implements the Neighborhood interface. Defines neighbors as all Cells one coordinate space away on a Grid (diagonal neighbors included)
+ */
 public class BasicNeighborhood implements Neighborhood{
 	public ArrayList<Cell> getNeighbors(Grid g, Cell c){
 		int x = c.getX();

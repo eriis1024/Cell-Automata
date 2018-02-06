@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 
+/**
+ * @author Jeremy Chen
+ *	Defines "neighbors" as all Cells one coordinate space away, excluding diagonal neighbors, implements the Neighborhood interface
+ */
 public class NonDiagNeighborhood implements Neighborhood{
+	/* (non-Javadoc)
+	 * @see Neighborhood#getNeighbors(Grid, Cell)
+	 */
 	public ArrayList<Cell> getNeighbors(Grid g, Cell c){
 		int x = c.getX();
 		int y = c.getY();
